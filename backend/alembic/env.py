@@ -3,8 +3,8 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 #imports importend stuff from my file 
-from app.database import Base
-from app import models
+from app.database import Base, DATABASE_URL
+from app.models import Recipe, User, Swipe
 
 from alembic import context
 
@@ -29,6 +29,7 @@ target_metadata = Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+config.set_main_option('sqlalchemy.url', DATABASE_URL)#this sets the database url from ours 
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
