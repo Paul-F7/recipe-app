@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 @router.get("/feed") #right now has error for deviceid 422!!
-def get_recipe_feed(
+def get_recipe_feed( #make sure to implement schema in this!!!!!!!!!
     device_id: str = Query(...),
     limit: int = Query(5), #has default value
     db: Session = Depends(get_db),
