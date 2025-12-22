@@ -1,4 +1,4 @@
-# Tinder for Recipes App
+# Recipe Recommendation App
 A mobile application that helps users discover recipes perfectly tailored to their taste preferences. Unlike traditional recipe apps, it learns that you might love sweet desserts but prefer spicy dinners, adapting recommendations for each meal category independently.
 
 **Core Features**
