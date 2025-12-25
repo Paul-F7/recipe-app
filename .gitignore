@@ -47,4 +47,4 @@ htmlcov/
 *.bak
 
 # Ignore recipe images
-backend/images/*
+backend/static/images/*
