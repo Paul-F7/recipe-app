@@ -1,0 +1,50 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+
+# Virtual Environments
+venv/
+.env/
+.env.*
+.venv/
+
+
+# FastAPI / Uvicorn
+*.log
+
+
+# SQLAlchemy / Alembic
+alembic/versions/__pycache__/
+alembic.ini.bak
+
+
+# Databases (local only)
+*.sqlite3
+*.db
+
+
+# OS / Editor files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+
+# Testing / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+
+# Misc
+*.tmp
+*.bak
+
+# Ignore recipe images
+backend/images/*
