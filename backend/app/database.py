@@ -2,8 +2,9 @@ from sqlalchemy import create_engine #create the database enginer - entry point 
 from sqlalchemy.orm import sessionmaker, DeclarativeBase #base class for all database models
 
 DATABASE_URL = "postgresql+psycopg://app:luap@localhost:5432/postgres" 
+# postgresql+psycopg://USER:PASSWORD@HOST:PORT/DATABASE_NAME
 
-engine = create_engine(DATABASE_URL, echo=True) #this creates teh database enginer(main connection to it)
+engine = create_engine(DATABASE_URL, echo=True) #this creates the database enginer(main connection to it)
 #echo=True prints SQLqueries to consolve for debuggging
 
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False) #autofulsh dont automatically save changs, autocommit is commit transactions

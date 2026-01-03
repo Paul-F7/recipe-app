@@ -9,29 +9,23 @@ class Recipe(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False)
-    image_url = Column(String, nullable=False) #added part were it cant be nullable as if its nullable its useless to me if it is
+    image_name = Column(String, nullable=False) #added part were it cant be nullable as if its nullable its useless to me if it is
 
-    diets = Column(JSONB, nullable=True, default=list)
+    diets = Column(JSONB, nullable=True, defaults=list)
     ingredients = Column(JSONB, nullable=False, default=list)
     instructions = Column(JSONB, nullable=False)
 
     nutrition = Column(JSONB, nullable=False, default=dict)
-    equipment = Column(JSONB, nullable=False, default=list)
+    #equipment = Column(JSONB, nullable=False, default=list)
     dish_type = Column(JSONB, nullable=False, default=list) #maybe for some of these they can be nullable 
     
     cook_time_minutes = Column(Integer)
-
-    # seperate columns for all the taste profiles for quick sorting
-    sweetness  = Column(Float, nullable=False)
-    saltiness  = Column(Float, nullable=False)
-    sourness   = Column(Float, nullable=False)
-    bitterness = Column(Float, nullable=False)
-    savoriness = Column(Float, nullable=False)
-    fattiness  = Column(Float, nullable=False)
-    spiciness  = Column(Float, nullable=False)  
+    
+    taste_profile = Column(JSONB, nullable=False, default=dict)
+    
 
 
-class User(Base):
+class User(Base): #maybe you should add the swipes here
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
@@ -52,6 +46,11 @@ class Swipe(Base):
     recipe_id = Column(Integer, ForeignKey("recipes.id", ondelete="CASCADE"), nullable=False)
 
     liked = Column(Boolean, nullable=False)
+
+    # also stored in swipes for easier access
+    taste_profile = Column(JSONB, nullable=False, default=dict)
+    dish_type = Column(JSONB, nullable=False, default=list)
+    
 
     created_at = Column(DateTime, server_default=func.now())
     
