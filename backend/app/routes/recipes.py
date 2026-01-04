@@ -7,6 +7,7 @@ from app.models import Recipe
 from app.schemas.preferences import UserPreferences
 from typing import Optional, List
 from app.services.recommendations import get_recommendations
+from app.schemas.recipe import RecipeOut
 
 #creates router object wiht the prefix and tag
 router = APIRouter(
@@ -14,8 +15,9 @@ router = APIRouter(
     tags=["recipes"]
 )
 
-@router.get("/feed") #right now has error for deviceid 422!!
-def get_recipe_feed( #make sure to implement schema in this!!!!!!!!!
+# check if the output uses schema correctly
+@router.get("/feed", response_model=List[RecipeOut]) #right now has error for deviceid 422!!
+def get_recipe_feed( 
     device_id: str = Query(...),
     limit: int = Query(5), #has default value
     categories: Optional[List[str]] = Query(None),

@@ -17,7 +17,7 @@ def group_swipes_by_category(swipes: List[Swipe]) -> Dict[str, List[Swipe]]:
     category_swipes = defaultdict(list) # assumes that the list alr exists
 
     for swipe in swipes:
-        for category in swipe.categories:
+        for category in swipe.dish_type:
             category_swipes[category].append(swipe)
     
     return dict(category_swipes)  # Convert defaultdict to regular dict
@@ -38,7 +38,7 @@ def calculate_avg(swipes):
         taste_profile = swipe.taste_profile #gets the taste profile of the swipe
         for dim in DIMENSIONS:
             # Add the recipe's value for this dimension
-            avg[dim] += taste_profile[dim]
+            avg[dim] += taste_profile.get(dim, 50.0)
 
     for dim in DIMENSIONS:
         avg[dim] /= n
@@ -52,7 +52,7 @@ def apply_dislikes(liked, disliked, weight=0.3, neutral=50.0):
 
     profile = {}
     for d in liked:
-        v = liked[d] - weight * (disliked[d] - neutral)
+        v = liked[d] - weight * (disliked.get(d, neutral) - neutral)
         profile[d] = max(0.0, min(100.0, v))
 
     return profile

@@ -22,7 +22,7 @@ from app.schemas.preferences import UserPreferences
 
 def get_recommendations(
     db: Session,
-    user_id: str,
+    user_id: int,
     limit: int = 20,
     preferences: UserPreferences = None,
     exploration_rate: float = 0.2
@@ -46,7 +46,8 @@ def get_recommendations(
     unseen_recipes = get_unseen_recipes(
         db, 
         user_id,
-        categories=preferences.categories  
+        categories=preferences.categories,
+        diets=preferences.diets
     )
 
     if not unseen_recipes:
@@ -128,9 +129,10 @@ def get_balanced_recommendations(
     # Organizes recipes by category
     category_recipes = defaultdict(list)
     for recipe, score in scored_recipes:
-        category = recipe.dish_type[0]
-        if category in available_categories:
-            category_recipes[category].append((recipe, score))
+        if recipe.dish_type:
+            category = recipe.dish_type[0]
+            if category in available_categories:
+                category_recipes[category].append((recipe, score))
 
     # Sort each category by score
     for category in category_recipes:

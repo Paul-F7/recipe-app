@@ -11,7 +11,7 @@ class Recipe(Base):
     title = Column(String, nullable=False)
     image_name = Column(String, nullable=False) #added part were it cant be nullable as if its nullable its useless to me if it is
 
-    diets = Column(JSONB, nullable=True, defaults=list)
+    diets = Column(JSONB, nullable=True, default=list)
     ingredients = Column(JSONB, nullable=False, default=list)
     instructions = Column(JSONB, nullable=False)
 

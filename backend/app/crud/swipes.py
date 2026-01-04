@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.models import Swipe
 from app.crud.user import get_or_create_user
 from app.crud.recipes import get_recipe
+from fastapi import HTTPException
 
 
 #create swipe from the frontend
@@ -15,7 +16,9 @@ def create_swipe(
 )-> Swipe:
     user = get_or_create_user(db, device_id)
     recipe = get_recipe(db, recipe_id)
-    
+    if not recipe:
+        raise HTTPException(status_code=404, detail="Recipe not found")
+
     swipe = Swipe( #date not created make sure its created
         user_id=user.id, #asigns user_id to user.id from the user
         recipe_id=recipe_id,

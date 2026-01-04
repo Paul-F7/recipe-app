@@ -18,7 +18,7 @@ def calculate_similarity(
     
     distance_squared = 0
     for dim in DIMENSIONS:
-        distance_squared += (recipe_taste[dim] - profile_taste[dim]) ** 2
+        distance_squared += (recipe_taste.get(dim, 50.0) - profile_taste.get(dim, 50.0)) ** 2
     
     distance = math.sqrt(distance_squared)
 
@@ -36,7 +36,10 @@ def score_recipe(
 ) -> float:
     
     # Get recipe's category just takes the first one
-    category = recipe.dish_type[0]
+    if recipe.dish_type:
+        category = recipe.dish_type[0]
+    else:
+        category = "Other"
 
     # Check if we have a profile for this category
     if category not in user_profiles:
