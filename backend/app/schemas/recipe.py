@@ -1,29 +1,22 @@
 from pydantic import BaseModel
+from typing import Any
 
 # Creates schema for recipe, that is sent to device 
 # Database Recipe Converted to this 
 class RecipeOut(BaseModel):
     id: int
     title: str
-    image_url: str
+    image_name: str
 
     ingredients: list[str]
     instructions: Any
 
     nutrition: dict
-    equipment: list[str]
-    dish_type: list[str]
+    
     diets: list[str]
+    dish_type: list[str]
 
-    cook_time_minutes: int | None
-
-    sweetness: float
-    saltiness: float
-    sourness: float
-    bitterness: float
-    savoriness: float
-    fattiness: float
-    spiciness: float
+    taste_profile: dict
 
     # pydantic configuration class, allows pydantic to read from SQLAlchemy models
     class Config:

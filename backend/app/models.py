@@ -16,10 +16,8 @@ class Recipe(Base):
     instructions = Column(JSONB, nullable=False)
 
     nutrition = Column(JSONB, nullable=False, default=dict)
-    #equipment = Column(JSONB, nullable=False, default=list)
     dish_type = Column(JSONB, nullable=False, default=list) #maybe for some of these they can be nullable 
     
-    cook_time_minutes = Column(Integer)
     
     taste_profile = Column(JSONB, nullable=False, default=dict)
     

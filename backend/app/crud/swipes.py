@@ -20,7 +20,7 @@ def create_swipe(
         user_id=user.id, #asigns user_id to user.id from the user
         recipe_id=recipe_id,
         liked=liked,
-        categories=recipe.dish_type, 
+        dish_type=recipe.dish_type, 
         taste_profile=recipe.taste_profile
     )
 
@@ -33,7 +33,7 @@ def create_swipe(
 # get liked swipes for specific user, returns list of swipes
 def get_liked_swipes(
     db: Session, 
-    user_id: str
+    user_id: int
 ):
     query = db.query(Swipe).filter(
         Swipe.user_id == user_id,
@@ -42,10 +42,10 @@ def get_liked_swipes(
       
     return query.all()
 
-
+# get liked swipes for specific user, returns list of swipes
 def get_disliked_swipes(
     db: Session, 
-    user_id: str
+    user_id: int
 ):
     query = db.query(Swipe).filter(
         Swipe.user_id == user_id,
