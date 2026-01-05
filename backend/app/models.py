@@ -1,4 +1,5 @@
-#this is where you define the data models for the information you need for each recipe 
+#this is where you define the data models for the information you need for each recipe
+# sqlalchemy and alembic models
 from sqlalchemy import Column, Integer, String, Float, DateTime, func, ForeignKey, Boolean
 from sqlalchemy.dialects.postgresql import JSONB
 from app.database import Base
@@ -9,17 +10,21 @@ class Recipe(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False)
-    image_name = Column(String, nullable=False) #added part were it cant be nullable as if its nullable its useless to me if it is
-
-    diets = Column(JSONB, nullable=True, default=list)
-    ingredients = Column(JSONB, nullable=False, default=list)
+    image_name = Column(String, nullable=True)
+    
+    # Core recipe data
     instructions = Column(JSONB, nullable=False)
-
-    nutrition = Column(JSONB, nullable=False, default=dict)
-    dish_type = Column(JSONB, nullable=False, default=list) #maybe for some of these they can be nullable 
+    ingredients = Column(JSONB, nullable=False)
+    cleaned_ingredients = Column(JSONB, nullable=True)  # Optional, from SQL but not used
     
+    # Map Python attribute names to SQL column names
+    dish_type = Column("meal_types", JSONB, nullable=False, default=list)
+    diets = Column("dietary_tags", JSONB, nullable=False, default=list)
     
-    taste_profile = Column(JSONB, nullable=False, default=dict)
+    nutrition = Column(JSONB, nullable=True)
+    taste_profile = Column(JSONB, nullable=True)
+    
+    created_at = Column(DateTime, server_default=func.now())
     
 
 

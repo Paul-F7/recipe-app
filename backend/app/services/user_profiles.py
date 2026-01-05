@@ -88,3 +88,10 @@ def calculate_user_taste_profile(db: Session, user_id: int) -> dict:
 #     "lunch": {"sweetness": 20.0, "spiciness": 40.0, ...},
 #     "drink": {"sweetness": 20.0, "spiciness": 40.0, ...}
 # }
+
+"""
+# Then run these commands in the PostgreSQL prompt:
+CREATE USER app WITH PASSWORD 'luap';
+ALTER USER app WITH SUPERUSER;  # Or just grant specific permissions
+\q  # Exit psql
+"""
