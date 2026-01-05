@@ -13,16 +13,16 @@ class Recipe(Base):
     image_name = Column(String, nullable=True)
     
     # Core recipe data
-    instructions = Column(JSONB, nullable=False)
-    ingredients = Column(JSONB, nullable=False)
-    cleaned_ingredients = Column(JSONB, nullable=True)  # Optional, from SQL but not used
+    instructions = Column(JSONB, nullable=False, default=list)
+    ingredients = Column(JSONB, nullable=False, default=list)
+    cleaned_ingredients = Column(JSONB, nullable=True, default=list)  # Optional, from SQL but not used
     
     # Map Python attribute names to SQL column names
     dish_type = Column("meal_types", JSONB, nullable=False, default=list)
     diets = Column("dietary_tags", JSONB, nullable=False, default=list)
     
-    nutrition = Column(JSONB, nullable=True)
-    taste_profile = Column(JSONB, nullable=True)
+    nutrition = Column(JSONB, nullable=True, default=dict)
+    taste_profile = Column(JSONB, nullable=False, default=dict)
     
     created_at = Column(DateTime, server_default=func.now())
     

@@ -32,7 +32,7 @@ def get_recipe_feed(
 
     # builds the preferences data type 
     preferences = UserPreferences(
-        categories=categories or ["Breakfast", "Lunch", "Dinner", "Dessert", "Drink"],
+        categories=categories or ["breakfast", "lunch", "dinner", "dessert", "drink"],
         diets=diets
     )
     
