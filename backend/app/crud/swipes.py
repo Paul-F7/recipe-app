@@ -7,7 +7,6 @@ from fastapi import HTTPException
 
 
 #create swipe from the frontend
-## Improvements for Later: handle duplicate swipes
 def create_swipe(
     db: Session,
     device_id: str,
@@ -19,11 +18,24 @@ def create_swipe(
     if not recipe:
         raise HTTPException(status_code=404, detail="Recipe not found")
 
-    swipe = Swipe( #date not created make sure its created
-        user_id=user.id, #asigns user_id to user.id from the user
+    # Check if swipe already exists for this user+recipe
+    existing_swipe = db.query(Swipe).filter(
+        Swipe.user_id == user.id,
+        Swipe.recipe_id == recipe_id
+    ).first()
+
+    if existing_swipe:
+        # Update existing swipe instead of creating duplicate
+        existing_swipe.liked = liked
+        db.commit()
+        db.refresh(existing_swipe)
+        return existing_swipe
+
+    swipe = Swipe(
+        user_id=user.id,
         recipe_id=recipe_id,
         liked=liked,
-        dish_type=recipe.dish_type, 
+        dish_type=recipe.dish_type,
         taste_profile=recipe.taste_profile
     )
 

@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 from typing import Any
 
-# Creates schema for recipe, that is sent to device 
-# Database Recipe Converted to this 
+# Creates schema for recipe, that is sent to device
+# Database Recipe Converted to this
 class RecipeOut(BaseModel):
     id: int
     title: str
@@ -12,7 +12,7 @@ class RecipeOut(BaseModel):
     instructions: Any
 
     nutrition: dict
-    
+
     diets: list[str]
     dish_type: list[str]
 
