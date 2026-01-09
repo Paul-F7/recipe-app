@@ -84,8 +84,16 @@ def get_recommendations(
         )
 
     random.shuffle(recommendations)
-    
-    return recommendations[:limit]
+
+    # Final deduplication to ensure no duplicates
+    seen_ids = set()
+    unique_recommendations = []
+    for recipe in recommendations:
+        if recipe.id not in seen_ids:
+            seen_ids.add(recipe.id)
+            unique_recommendations.append(recipe)
+
+    return unique_recommendations[:limit]
 
 def get_available_categories(recipes: List[Recipe]) -> List[str]:
     """Get list of unique categories present in recipe list."""

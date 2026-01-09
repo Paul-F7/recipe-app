@@ -1,6 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import TabNavigator from './src/components/tabnavigator';
+import { PreferencesProvider } from './src/context/PreferencesContext';
+import { LikedRecipesProvider } from './src/context/LikedRecipesContext';
+import { RecipeFeedProvider } from './src/context/RecipeFeedContext';
 
+export default function App() {
+  return (
+    <PreferencesProvider>
+      <LikedRecipesProvider>
+        <RecipeFeedProvider>
+          <TabNavigator />
+        </RecipeFeedProvider>
+      </LikedRecipesProvider>
+    </PreferencesProvider>
+  );
+}
+/*
 export default function App() {
   return (
     <View style={styles.container}>
@@ -9,6 +24,7 @@ export default function App() {
     </View>
   );
 }
+  */
 
 const styles = StyleSheet.create({
   container: {
