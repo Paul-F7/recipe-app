@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, List 
+from typing import Optional, List
 
 class UserPreferences(BaseModel):
     """User's recommendation preferences."""

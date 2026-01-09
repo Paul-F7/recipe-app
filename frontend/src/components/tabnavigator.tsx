@@ -15,6 +15,7 @@ export default function TabNavigator() {
     <NavigationContainer>
       <Tab.Navigator
         id = "Tabs"
+        initialRouteName="Discovery"
         screenOptions={{ headerShown: false }}
         tabBar={(props) => <CustomTabBar {...props} />}
       >

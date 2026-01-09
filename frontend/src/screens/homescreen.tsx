@@ -8,8 +8,9 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import { ChefHat, RefreshCw } from 'lucide-react-native';
+import { ChefHat, Leaf, RefreshCw } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
 import { Colors } from '../constants/theme';
 import SwipeableCard from '../components/SwipeableCard';
@@ -21,6 +22,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const SWIPE_THRESHOLD = 120;
 
 export default function HomeScreen() {
+  const navigation = useNavigation();
   const { recipes, currentIndex, isLoading, error, refreshFeed, isFetchingMore } = useRecipeFeed();
   const { recordSwipe } = useSwipe();
   const position = useRef(new Animated.Value(0)).current;
@@ -52,7 +54,7 @@ export default function HomeScreen() {
       const recipe = recipesRef.current[idx];
       if (recipe) {
         const liked = direction === 'right';
-        void recordSwipeRef.current(recipe.id, liked);
+        void recordSwipeRef.current(recipe, liked);
       }
     });
   });
@@ -115,7 +117,7 @@ export default function HomeScreen() {
 
   const getNextCardBlurOpacity = () =>
     position.interpolate({
-      inputRange: [-SWIPE_THRESHOLD * 5, 0, SWIPE_THRESHOLD * 5],
+      inputRange: [-SWIPE_THRESHOLD * 4.2, 0, SWIPE_THRESHOLD * 5],
       outputRange: [0, 1, 0],
       extrapolate: 'clamp',
     });
@@ -130,10 +132,10 @@ export default function HomeScreen() {
     if (error) {
       return (
         <View style={styles.noMoreCards}>
-          <ChefHat size={80} color={Colors.dark.textSecondary} />
-          <Text style={styles.noMoreText}>Oops!</Text>
+          <Leaf size={80} color={Colors.dark.success} />
+          <Text style={[styles.noMoreText, styles.errorTitle]}>Oops!</Text>
           <Text style={styles.noMoreSubtext}>{error}</Text>
-          <TouchableOpacity style={styles.retryButton} onPress={refreshFeed}>
+          <TouchableOpacity style={[styles.retryButton, styles.retryButtonError]} onPress={refreshFeed}>
             <RefreshCw size={20} color={Colors.dark.textPrimary} />
             <Text style={styles.retryText}>Try Again</Text>
           </TouchableOpacity>
@@ -151,11 +153,14 @@ export default function HomeScreen() {
       return (
         <View style={styles.noMoreCards}>
           <ChefHat size={80} color={Colors.dark.textSecondary} />
-          <Text style={styles.noMoreText}>No more recipes!</Text>
-          <Text style={styles.noMoreSubtext}>Check back later for more delicious ideas</Text>
-          <TouchableOpacity style={styles.retryButton} onPress={refreshFeed}>
+          <Text style={styles.noMoreText}>No recipes match</Text>
+          <Text style={styles.noMoreSubtext}>Try changing your filters</Text>
+          <TouchableOpacity
+            style={styles.retryButton}
+            onPress={() => navigation.navigate('Preferences')}
+          >
             <RefreshCw size={20} color={Colors.dark.textPrimary} />
-            <Text style={styles.retryText}>Start Over</Text>
+            <Text style={styles.retryText}>Change Filters</Text>
           </TouchableOpacity>
         </View>
       );
@@ -188,7 +193,10 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['#0a0a0a', '#1a0a0a', '#0a0a0a']} style={StyleSheet.absoluteFill} />
+      <LinearGradient
+        colors={['#050704', '#0f1a0a', '#050704']}
+        style={StyleSheet.absoluteFill}
+      />
       <View style={styles.cardsContainer}>{renderCards()}</View>
     </View>
   );
@@ -231,9 +239,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     gap: 8,
   },
+  retryButtonError: {
+    backgroundColor: Colors.dark.success,
+  },
   retryText: {
     fontSize: 16,
     fontWeight: '600',
     color: Colors.dark.textPrimary,
+  },
+  errorTitle: {
+    color: Colors.dark.success,
   },
 });

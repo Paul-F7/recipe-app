@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
-import { ChefHat } from 'lucide-react-native';
+import { Leaf } from 'lucide-react-native';
 import { Colors } from '../constants/theme';
 
 interface LoadingAnimationProps {
@@ -116,7 +116,7 @@ export default function LoadingAnimation({ message = 'Finding recipes for you...
           },
         ]}
       >
-        <ChefHat size={80} color={Colors.dark.accent} />
+        <Leaf size={80} color={Colors.dark.success} />
       </Animated.View>
 
       <View style={styles.textContainer}>
@@ -184,6 +184,6 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: Colors.dark.accent,
+    backgroundColor: Colors.dark.success,
   },
 });

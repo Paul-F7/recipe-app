@@ -47,5 +47,5 @@ export interface taste_profile {
 
 export type DishType = "breakfast" | "lunch" | "dinner" | "dessert" | "drink";
 
-//im not sure about this look into what the unique values are -- SQL query
-export type DietType = "Vegan" | "Vegetarian" | "Gluten Free" | "Keto" | "Paleo" | "Lactose-Free";
+
+export type DietType =  "Vegetarian" | "Gluten Free" | "Keto" | "Lactose-Free";

@@ -40,10 +40,10 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
           const Icon = route.name === 'Liked' ? Heart : route.name === CENTER_ROUTE ? Compass : Settings;
           const iconColor = isCenter
             ? isFocused
-              ? Colors.dark.accent
+              ? Colors.dark.success
               : Colors.dark.textSecondary
             : isFocused
-              ? Colors.dark.accent
+              ? Colors.dark.success
               : Colors.dark.textSecondary;
           const iconFill = route.name === 'Liked' && isFocused ? iconColor : 'none';
 
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   tabIconContainerActive: {
-    backgroundColor: 'rgba(255, 59, 48, 0.16)',
+    backgroundColor: 'rgba(52, 199, 89, 0.18)',
   },
   centerButtonContainer: {
     flex: 1,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
   centerButtonOuterActive: {
-    shadowColor: Colors.dark.accent,
+    shadowColor: Colors.dark.success,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.25,
     shadowRadius: 12,

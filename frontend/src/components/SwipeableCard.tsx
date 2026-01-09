@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Animated, Dimensions } from 'react-native';
+import { StyleSheet, Animated, Dimensions, View } from 'react-native';
 import { Heart, X } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
 
@@ -40,14 +40,18 @@ export default function SwipeableCard({
           style={[styles.overlay, styles.likeOverlay, { opacity: likeOpacity }]}
           pointerEvents="none"
         >
-          <Heart size={120} color="#fff" fill="#fff" />
+          <View style={styles.likeIconGlow}>
+            <Heart size={120} color="#eaffff" fill="#eaffff" />
+          </View>
         </Animated.View>
         {/* Dislike overlay - red tint with X */}
         <Animated.View
           style={[styles.overlay, styles.nopeOverlay, { opacity: nopeOpacity }]}
           pointerEvents="none"
         >
-          <X size={120} color="#fff" strokeWidth={3} />
+          <View style={styles.nopeIconGlow}>
+            <X size={120} color="#ffe9f1" strokeWidth={3} />
+          </View>
         </Animated.View>
       </Animated.View>
     );
@@ -83,10 +87,24 @@ const styles = StyleSheet.create({
     zIndex: 1000,
   },
   likeOverlay: {
-    backgroundColor: 'rgba(34, 197, 94, 0.6)',
+    backgroundColor: 'rgba(0, 255, 198, 0.22)',
   },
   nopeOverlay: {
-    backgroundColor: 'rgba(239, 68, 68, 0.6)',
+    backgroundColor: 'rgba(255, 59, 140, 0.22)',
+  },
+  likeIconGlow: {
+    shadowColor: '#00ffd0',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 18,
+    elevation: 12,
+  },
+  nopeIconGlow: {
+    shadowColor: '#ff3d71',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 18,
+    elevation: 12,
   },
   blurOverlay: {
     ...StyleSheet.absoluteFillObject,

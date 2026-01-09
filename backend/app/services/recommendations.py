@@ -44,7 +44,7 @@ def get_recommendations(
 
     # gets all the unseen preferences
     unseen_recipes = get_unseen_recipes(
-        db, 
+        db,
         user_id,
         categories=preferences.categories,
         diets=preferences.diets
@@ -52,13 +52,13 @@ def get_recommendations(
 
     if not unseen_recipes:
         return []  # !! fix this later as you want to start showing seen recipes
-    
+
     # if no user profile yet then return random recipes
     if not user_profiles:
         random.shuffle(unseen_recipes)
-        return unseen_recipes[:limit] # !! how does this work if profile exiss for one recipe but not another 
-    
-    
+        return unseen_recipes[:limit] # !! how does this work if profile exiss for one recipe but not another
+
+
     scored_recipes = score_recipes(unseen_recipes, user_profiles)
 
     scored_recipes.sort(key=lambda x: x[1], reverse=True) # sort scored recipes by their score highest -> lowest
@@ -71,12 +71,12 @@ def get_recommendations(
     # if more than 1 avalaible categories balance otherwise get simple recommendations
     if len(available_categories) > 1:
         recommendations = get_balanced_recommendations(
-            scored_recipes, 
-            exploit_count, 
+            scored_recipes,
+            exploit_count,
             explore_count,
             available_categories
         )
-    else:  
+    else:
         recommendations = get_simple_recommendations(
             scored_recipes,
             exploit_count,
@@ -119,11 +119,11 @@ def get_simple_recommendations(
 
     if remaining and explore_count > 0:
         explore_sample = random.sample( # gets random items form the list
-            remaining, 
+            remaining,
             min(explore_count, len(remaining))
         )
         recommendations.extend(explore_sample) # adds new random items to list
-    
+
     return recommendations
 
 # balanced recommendation through mutliple categories
@@ -133,7 +133,7 @@ def get_balanced_recommendations(
     explore_count: int,
     available_categories: List[str]
 ) -> List[Recipe]:
-    
+
     # Organizes recipes by category
     category_recipes = defaultdict(list)
     for recipe, score in scored_recipes:
@@ -160,26 +160,26 @@ def get_balanced_recommendations(
         take_count = recipes_per_category
         if i < extra_slots:
             take_count += 1  # Distribute extra slots
-        
+
         category_recs = [recipe for recipe, score in recipes[:take_count]]
         recommendations.extend(category_recs)
-    
+
     # Add exploration (random from all categories)
     all_remaining = []
     already_selected = set(rec.id for rec in recommendations)
-    
+
     for category, recipes in category_recipes.items():
         remaining = [
-            recipe for recipe, score in recipes 
+            recipe for recipe, score in recipes
             if recipe.id not in already_selected
         ]
         all_remaining.extend(remaining)
-    
+
     if all_remaining and explore_count > 0:
         explore_sample = random.sample(
             all_remaining,
             min(explore_count, len(all_remaining))
         )
         recommendations.extend(explore_sample)
-    
+
     return recommendations

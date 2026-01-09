@@ -9,9 +9,9 @@ def get_recipe(db: Session, recipe_id: int):
     """Get a recipe by ID"""
     return db.query(Recipe).filter(Recipe.id == recipe_id).first()
 
-# gets all the unseen recipes -- this is where all the filteration happens 
+# gets all the unseen recipes -- this is where all the filteration happens
 def get_unseen_recipes(
-    db: Session, 
+    db: Session,
     user_id: int,
     categories: Optional[List[str]] = None,
     diets: Optional[List[str]] = None,
@@ -27,7 +27,7 @@ def get_unseen_recipes(
             Swipe.user_id == user_id
         )
     )
-    
+
     # only keeps recipes where swipe is none
     query = query.filter(Swipe.id.is_(None))
     '''
@@ -48,8 +48,8 @@ def get_unseen_recipes(
         category_filters= []
         for category in categories:
             category_filters.append(Recipe.dish_type.contains([category]))
-    
-        # if there are category filters then it adds them as or parameters 
+
+        # if there are category filters then it adds them as or parameters
         if category_filters:
             query = query.filter(or_(*category_filters))
 
@@ -58,15 +58,15 @@ def get_unseen_recipes(
         diet_filters= []
         for diet in diets:
             diet_filters.append(Recipe.diets.contains([diet]))
-    
-        # if there are diet filters then it adds them as or parameters 
+
+        # if there are diet filters then it adds them as or parameters
         if diet_filters:
             query = query.filter(and_(*diet_filters))
 
     # Optional limit
     if limit:
         query = query.limit(limit)
-    
+
     return query.all()
 
-    
+

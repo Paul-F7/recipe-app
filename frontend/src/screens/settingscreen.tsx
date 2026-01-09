@@ -1,26 +1,36 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import {
+  Coffee,
+  CupSoda,
+  Flame,
+  IceCream,
+  Leaf,
+  MilkOff,
+  Sandwich,
+  Settings,
+  Utensils,
+  WheatOff,
+} from 'lucide-react-native';
 
 import { Colors } from '../constants/theme';
 import { DishType, DietType } from '../types';
 import { usePreferences } from '../context/PreferencesContext';
 
-const dishTypes: { id: DishType; label: string }[] = [
-  { id: 'breakfast', label: 'Breakfast' },
-  { id: 'lunch', label: 'Lunch' },
-  { id: 'dinner', label: 'Dinner' },
-  { id: 'dessert', label: 'Dessert' },
-  { id: 'drink', label: 'Drinks' },
+const dishTypes: { id: DishType; label: string; icon: typeof Settings; color: string }[] = [
+  { id: 'breakfast', label: 'Breakfast', icon: Coffee, color: '#fbbf24' },
+  { id: 'lunch', label: 'Lunch', icon: Sandwich, color: '#60a5fa' },
+  { id: 'dinner', label: 'Dinner', icon: Utensils, color: '#34d399' },
+  { id: 'dessert', label: 'Dessert', icon: IceCream, color: '#f472b6' },
+  { id: 'drink', label: 'Drinks', icon: CupSoda, color: '#a78bfa' },
 ];
 
-const dietTypes: { id: DietType; label: string }[] = [
-  { id: 'Vegan', label: 'Vegan' },
-  { id: 'Vegetarian', label: 'Vegetarian' },
-  { id: 'Gluten Free', label: 'Gluten Free' },
-  { id: 'Keto', label: 'Keto' },
-  { id: 'Paleo', label: 'Paleo' },
-  { id: 'Lactose-Free', label: 'Lactose-Free' },
+const dietTypes: { id: DietType; label: string; color: string; icon: typeof Settings }[] = [
+  { id: 'Vegetarian', label: 'Vegetarian', color: '#4ade80', icon: Leaf },
+  { id: 'Gluten Free', label: 'Gluten Free', color: '#fbbf24', icon: WheatOff },
+  { id: 'Keto', label: 'Keto', color: '#60a5fa', icon: Flame },
+  { id: 'Lactose-Free', label: 'Lactose-Free', color: '#c084fc', icon: MilkOff },
 ];
 
 export default function SettingsScreen() {
@@ -31,12 +41,15 @@ export default function SettingsScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#0a0a0a', '#1a0a0a', '#0a0a0a']}
+        colors={['#050704', '#0f1a0a', '#050704']}
         style={StyleSheet.absoluteFill}
       />
 
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Preferences</Text>
+        <View style={styles.headerTitleRow}>
+          <Settings size={34} color={Colors.dark.textPrimary} />
+          <Text style={styles.headerTitle}>Preferences</Text>
+        </View>
         <Text style={styles.headerSubtitle}>Customize your recipe feed</Text>
       </View>
 
@@ -44,20 +57,45 @@ export default function SettingsScreen() {
         style={styles.scrollView}
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
       >
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Categories</Text>
-          <View style={styles.optionsGrid}>
+        <View style={[styles.section, styles.categorySection]}>
+          <View style={styles.categoryHeader}>
+            <Text style={styles.categoryTitle}>Categories</Text>
+            <Text style={styles.categorySubtitle}>Pick the meals you want to see</Text>
+          </View>
+          <View style={styles.categoryGrid}>
             {dishTypes.map((item) => {
               const isSelected = selectedCategories.includes(item.id);
+              const Icon = item.icon;
               return (
                 <TouchableOpacity
                   key={item.id}
-                  style={[styles.optionCard, isSelected && styles.optionCardSelected]}
+                  style={[
+                    styles.optionCard,
+                    styles.categoryOptionCard,
+                    isSelected && styles.optionCardSelected,
+                    isSelected && { borderColor: item.color, backgroundColor: `${item.color}22` },
+                  ]}
                   onPress={() => toggleCategory(item.id)}
                   activeOpacity={0.7}
                 >
-                  <Text style={[styles.optionLabel, isSelected && styles.optionLabelSelected]}>
+                  <View
+                    style={[
+                      styles.optionIcon,
+                      { borderColor: item.color, backgroundColor: `${item.color}22` },
+                      isSelected && { backgroundColor: `${item.color}44` },
+                    ]}
+                  >
+                    <Icon size={12} color={item.color} />
+                  </View>
+                  <Text
+                    style={[
+                      styles.optionLabel,
+                      styles.categoryOptionLabel,
+                      isSelected && styles.optionLabelSelected,
+                    ]}
+                  >
                     {item.label}
                   </Text>
                 </TouchableOpacity>
@@ -66,19 +104,43 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Dietary Preferences</Text>
-          <View style={styles.optionsGrid}>
+        <View style={[styles.section, styles.dietarySection]}>
+          <View style={styles.dietaryHeader}>
+            <Text style={styles.dietaryTitle}>Dietary Preferences</Text>
+            <Text style={styles.dietarySubtitle}>Choose what fits your diet</Text>
+          </View>
+          <View style={styles.dietaryGrid}>
             {dietTypes.map((item) => {
               const isSelected = selectedDiets.includes(item.id);
+              const Icon = item.icon;
               return (
                 <TouchableOpacity
                   key={item.id}
-                  style={[styles.optionCard, isSelected && styles.optionCardSelected]}
+                  style={[
+                    styles.optionCard,
+                    styles.categoryOptionCard,
+                    isSelected && styles.optionCardSelected,
+                    isSelected && { borderColor: item.color, backgroundColor: `${item.color}22` },
+                  ]}
                   onPress={() => toggleDiet(item.id)}
                   activeOpacity={0.7}
                 >
-                  <Text style={[styles.optionLabel, isSelected && styles.optionLabelSelected]}>
+                  <View
+                    style={[
+                      styles.optionIcon,
+                      { borderColor: item.color, backgroundColor: `${item.color}22` },
+                      isSelected && { backgroundColor: `${item.color}44` },
+                    ]}
+                  >
+                    <Icon size={12} color={item.color} />
+                  </View>
+                  <Text
+                    style={[
+                      styles.optionLabel,
+                      styles.categoryOptionLabel,
+                      isSelected && styles.optionLabelSelected,
+                    ]}
+                  >
                     {item.label}
                   </Text>
                 </TouchableOpacity>
@@ -100,16 +162,27 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingHorizontal: 24,
     paddingBottom: 20,
+    alignItems: 'center',
+  },
+  headerTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 4,
   },
   headerTitle: {
-    fontSize: 36,
+    fontSize: 42,
     fontWeight: '700',
     color: Colors.dark.textPrimary,
-    marginBottom: 4,
+    textAlign: 'center',
+    textShadowColor: 'rgba(255, 255, 255, 0.35)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 10,
   },
   headerSubtitle: {
     fontSize: 16,
     color: Colors.dark.textSecondary,
+    textAlign: 'center',
   },
   scrollView: {
     flex: 1,
@@ -127,25 +200,121 @@ const styles = StyleSheet.create({
     color: Colors.dark.textPrimary,
     marginBottom: 16,
   },
+  categorySection: {
+    backgroundColor: 'rgba(6, 10, 6, 0.65)',
+    borderRadius: 20,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(148, 163, 184, 0.12)',
+    shadowColor: '#000000',
+    shadowOpacity: 0.45,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8,
+  },
+  categoryHeader: {
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  categoryTitle: {
+    fontSize: 26,
+    fontWeight: '700',
+    color: Colors.dark.textPrimary,
+    marginBottom: 4,
+    textAlign: 'center',
+    width: '100%',
+    letterSpacing: 0.3,
+    textShadowColor: 'rgba(255, 255, 255, 0.35)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
+  },
+  categorySubtitle: {
+    fontSize: 13,
+    color: Colors.dark.textSecondary,
+    textAlign: 'center',
+    width: '100%',
+  },
+  categoryGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    justifyContent: 'center',
+    rowGap: 14,
+  },
+  dietarySection: {
+    backgroundColor: 'rgba(6, 10, 6, 0.65)',
+    borderRadius: 20,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(148, 163, 184, 0.12)',
+    shadowColor: '#000000',
+    shadowOpacity: 0.45,
+    shadowRadius: 18,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8,
+  },
+  dietaryHeader: {
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  dietaryTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: Colors.dark.textPrimary,
+    marginBottom: 4,
+    textAlign: 'center',
+  },
+  dietarySubtitle: {
+    fontSize: 13,
+    color: Colors.dark.textSecondary,
+    textAlign: 'center',
+  },
+  dietaryGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    justifyContent: 'center',
+    rowGap: 14,
+  },
   optionsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 12,
   },
   optionCard: {
-    paddingHorizontal: 20,
-    paddingVertical: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
     backgroundColor: Colors.dark.card,
     borderRadius: 16,
     borderWidth: 2,
     borderColor: Colors.dark.border,
   },
+  categoryOptionCard: {
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    gap: 8,
+    borderRadius: 12,
+  },
+  optionIcon: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+  },
+  categoryOptionLabel: {
+    fontSize: 14,
+  },
   optionCardSelected: {
-    backgroundColor: Colors.dark.cardLight,
-    borderColor: Colors.dark.accent,
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    borderColor: 'rgba(148, 163, 184, 0.45)',
   },
   optionLabel: {
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: '600',
     color: Colors.dark.textSecondary,
   },

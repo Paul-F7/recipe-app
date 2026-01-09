@@ -1,8 +1,8 @@
 export const Colors = {
   dark: {
     background: '#000000',
-    card: '#1c1c1e',
-    cardLight: '#2c2c2e',
+    card: '#0c0c0e',
+    cardLight: '#161618',
     border: '#2c2c2e',
     textPrimary: '#ffffff', //use this for text
     textSecondary: '#8e8e93',
