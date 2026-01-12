@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { Circle, Flame, Leaf, ListOrdered, MilkOff, WheatOff } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -72,7 +72,7 @@ const getDietTagConfig = (diet: string) => {
   };
 };
 
-export default function RecipeCard({ recipe }: RecipeCardProps) {
+function RecipeCard({ recipe }: RecipeCardProps) {
   const ingredientsList = recipe.ingredients
     .map((ingredient) => ingredient.trim())
     .filter(Boolean);
@@ -146,9 +146,11 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
               </View>
               <View style={styles.ingredientsList}>
                 {ingredientsList.map((ingredient, idx) => (
-                  <View key={idx} style={styles.ingredientItem}>
-                    <View style={styles.ingredientMarker} />
-                    <Text style={styles.ingredientText}>{ingredient}</Text>
+                  <View
+                    key={idx}
+                    style={[styles.ingredientChip, INGREDIENT_CHIP_STYLES[idx % INGREDIENT_CHIP_STYLES.length]]}
+                  >
+                    <Text style={styles.ingredientChipText}>{ingredient}</Text>
                   </View>
                 ))}
               </View>
@@ -243,6 +245,8 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
   );
 }
 
+export default memo(RecipeCard);
+
 const CARD_IMAGE_HEIGHT = 280;
 const HEADER_TOP_OFFSET = 220;
 const HEADER_OVERLAP = CARD_IMAGE_HEIGHT - HEADER_TOP_OFFSET;
@@ -253,6 +257,13 @@ const CONTENT_TOP_BLUR_FEATHER_OFFSET = 4;
 const CONTENT_TOP_FADE_HEIGHT = 28;
 const INGREDIENTS_ACCENT = '#22c55e';
 const INSTRUCTIONS_ACCENT = '#f59e0b';
+const INGREDIENT_CHIP_STYLES = [
+  { backgroundColor: 'rgba(21, 128, 61, 0.16)', borderColor: 'rgba(21, 128, 61, 0.42)' },
+  { backgroundColor: 'rgba(22, 163, 74, 0.16)', borderColor: 'rgba(22, 163, 74, 0.42)' },
+  { backgroundColor: 'rgba(5, 150, 105, 0.15)', borderColor: 'rgba(5, 150, 105, 0.4)' },
+  { backgroundColor: 'rgba(34, 197, 94, 0.16)', borderColor: 'rgba(34, 197, 94, 0.42)' },
+  { backgroundColor: 'rgba(20, 83, 45, 0.2)', borderColor: 'rgba(20, 83, 45, 0.35)' },
+] as const;
 
 const styles = StyleSheet.create({
   card: {
@@ -405,31 +416,26 @@ const styles = StyleSheet.create({
     color: Colors.dark.textPrimary,
   },
   ingredientsList: {
-    gap: 10,
-  },
-  ingredientItem: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    paddingVertical: 10,
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  ingredientChip: {
+    alignSelf: 'flex-start',
+    paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: 12,
+    borderRadius: 14,
     backgroundColor: 'rgba(255, 255, 255, 0.06)',
     borderWidth: 1,
-    borderColor: 'rgba(148, 163, 184, 0.18)',
+    borderColor: 'rgba(148, 163, 184, 0.2)',
+    maxWidth: '100%',
   },
-  ingredientMarker: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: INGREDIENTS_ACCENT,
-  },
-  ingredientText: {
-    flex: 1,
+  ingredientChipText: {
     color: Colors.dark.textPrimary,
     fontSize: 12,
     lineHeight: 18,
     fontWeight: '600',
+    flexShrink: 1,
   },
   instructionsList: {
     gap: 12,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
   Coffee,
@@ -15,6 +15,7 @@ import {
 } from 'lucide-react-native';
 
 import { Colors } from '../constants/theme';
+import PressableScale from '../components/PressableScale';
 import { DishType, DietType } from '../types';
 import { usePreferences } from '../context/PreferencesContext';
 
@@ -32,6 +33,7 @@ const dietTypes: { id: DietType; label: string; color: string; icon: typeof Sett
   { id: 'Keto', label: 'Keto', color: '#60a5fa', icon: Flame },
   { id: 'Lactose-Free', label: 'Lactose-Free', color: '#c084fc', icon: MilkOff },
 ];
+const PRESS_RETENTION_OFFSET = { top: 6, bottom: 6, left: 6, right: 6 };
 
 export default function SettingsScreen() {
   const { preferences, toggleCategory, toggleDiet } = usePreferences();
@@ -69,7 +71,7 @@ export default function SettingsScreen() {
               const isSelected = selectedCategories.includes(item.id);
               const Icon = item.icon;
               return (
-                <TouchableOpacity
+                <PressableScale
                   key={item.id}
                   style={[
                     styles.optionCard,
@@ -78,7 +80,10 @@ export default function SettingsScreen() {
                     isSelected && { borderColor: item.color, backgroundColor: `${item.color}22` },
                   ]}
                   onPress={() => toggleCategory(item.id)}
-                  activeOpacity={0.7}
+                  pressRetentionOffset={PRESS_RETENTION_OFFSET}
+                  scaleTo={0.97}
+                  durationIn={50}
+                  durationOut={80}
                 >
                   <View
                     style={[
@@ -98,7 +103,7 @@ export default function SettingsScreen() {
                   >
                     {item.label}
                   </Text>
-                </TouchableOpacity>
+                </PressableScale>
               );
             })}
           </View>
@@ -114,7 +119,7 @@ export default function SettingsScreen() {
               const isSelected = selectedDiets.includes(item.id);
               const Icon = item.icon;
               return (
-                <TouchableOpacity
+                <PressableScale
                   key={item.id}
                   style={[
                     styles.optionCard,
@@ -123,7 +128,10 @@ export default function SettingsScreen() {
                     isSelected && { borderColor: item.color, backgroundColor: `${item.color}22` },
                   ]}
                   onPress={() => toggleDiet(item.id)}
-                  activeOpacity={0.7}
+                  pressRetentionOffset={PRESS_RETENTION_OFFSET}
+                  scaleTo={0.97}
+                  durationIn={50}
+                  durationOut={80}
                 >
                   <View
                     style={[
@@ -143,7 +151,7 @@ export default function SettingsScreen() {
                   >
                     {item.label}
                   </Text>
-                </TouchableOpacity>
+                </PressableScale>
               );
             })}
           </View>

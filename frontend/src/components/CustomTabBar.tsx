@@ -1,12 +1,15 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Heart, Compass, Settings } from 'lucide-react-native';
 
 import { Colors } from '../constants/theme';
+import PressableScale from './PressableScale';
 
 const CENTER_ROUTE = 'Discovery';
+const PRESS_RETENTION_OFFSET = { top: 8, bottom: 8, left: 8, right: 8 };
+const HIT_SLOP = { top: 6, bottom: 6, left: 6, right: 6 };
 
 export default function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   return (
@@ -49,7 +52,7 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
 
           if (isCenter) {
             return (
-              <TouchableOpacity
+              <PressableScale
                 key={route.key}
                 accessibilityRole="button"
                 accessibilityState={isFocused ? { selected: true } : {}}
@@ -57,8 +60,14 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
                 testID={options.tabBarButtonTestID}
                 onPress={onPress}
                 onLongPress={onLongPress}
+                pressRetentionOffset={PRESS_RETENTION_OFFSET}
+                hitSlop={HIT_SLOP}
                 style={styles.centerButtonContainer}
-                activeOpacity={0.85}
+                scaleTo={0.97}
+                durationIn={28}
+                durationOut={55}
+                delayPressIn={0}
+                delayPressOut={0}
               >
                 <View style={[styles.centerButtonOuter, isFocused && styles.centerButtonOuterActive]}>
                   <LinearGradient
@@ -78,12 +87,12 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
                     />
                   </LinearGradient>
                 </View>
-              </TouchableOpacity>
+              </PressableScale>
             );
           }
 
           return (
-            <TouchableOpacity
+            <PressableScale
               key={route.key}
               accessibilityRole="button"
               accessibilityState={isFocused ? { selected: true } : {}}
@@ -92,12 +101,18 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
               onPress={onPress}
               onLongPress={onLongPress}
               style={styles.tabButton}
-              activeOpacity={0.75}
+              pressRetentionOffset={PRESS_RETENTION_OFFSET}
+              hitSlop={HIT_SLOP}
+              scaleTo={0.96}
+              durationIn={24}
+              durationOut={50}
+              delayPressIn={0}
+              delayPressOut={0}
             >
               <View style={[styles.tabIconContainer, isFocused && styles.tabIconContainerActive]}>
                 <Icon size={26} color={iconColor} fill={iconFill} />
               </View>
-            </TouchableOpacity>
+            </PressableScale>
           );
         })}
       </View>

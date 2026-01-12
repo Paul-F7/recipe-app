@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, Animated, Dimensions, View } from 'react-native';
 import { Heart, X } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
@@ -21,7 +21,7 @@ interface SwipeableCardProps {
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
-export default function SwipeableCard({
+function SwipeableCard({
   recipe,
   isActive,
   stackOffset = 0,
@@ -31,9 +31,18 @@ export default function SwipeableCard({
   nopeOpacity,
   blurOpacity,
 }: SwipeableCardProps) {
+  const animationPerformanceProps = {
+    renderToHardwareTextureAndroid: true,
+    shouldRasterizeIOS: true,
+  };
+
   if (isActive) {
     return (
-      <Animated.View style={[styles.cardContainer, cardStyle]} {...panHandlers}>
+      <Animated.View
+        style={[styles.cardContainer, cardStyle]}
+        {...panHandlers}
+        {...animationPerformanceProps}
+      >
         <RecipeCard recipe={recipe} />
         {/* Like overlay - green tint with heart */}
         <Animated.View
@@ -58,7 +67,10 @@ export default function SwipeableCard({
   }
 
   return (
-    <Animated.View style={[styles.cardContainer, { top: stackOffset }, cardStyle]}>
+    <Animated.View
+      style={[styles.cardContainer, { top: stackOffset }, cardStyle]}
+      {...animationPerformanceProps}
+    >
       <RecipeCard recipe={recipe} />
       {blurOpacity !== undefined ? (
         <AnimatedBlurView
@@ -71,6 +83,8 @@ export default function SwipeableCard({
     </Animated.View>
   );
 }
+
+export default memo(SwipeableCard);
 
 const styles = StyleSheet.create({
   cardContainer: {

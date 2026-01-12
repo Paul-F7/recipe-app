@@ -15,7 +15,10 @@ export function useSwipe() {
       addLikedRecipe(recipe);
     }
 
-    // Send to backend FIRST (before triggering prefetch)
+    // Advance UI immediately to avoid swipe jitter and delays.
+    onSwipeComplete();
+
+    // Send to backend in the background.
     try {
       const deviceId = await getDeviceId();
       await swipesApi.recordSwipe({
@@ -26,9 +29,6 @@ export function useSwipe() {
     } catch (error) {
       console.error('Failed to record swipe:', error);
     }
-
-    // Notify feed context AFTER swipe is recorded (triggers prefetch if needed)
-    onSwipeComplete();
   }, [addLikedRecipe, onSwipeComplete]);
 
   return { recordSwipe };

@@ -7,7 +7,6 @@ import {
   Image,
   Modal,
   Pressable,
-  TouchableOpacity,
   Dimensions,
   ScrollView,
 } from 'react-native';
@@ -15,6 +14,7 @@ import { Coffee, CupSoda, Heart, IceCream, Sandwich, Trash2, Utensils } from 'lu
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { Colors } from '../constants/theme';
+import PressableScale from '../components/PressableScale';
 import LikedRecipeSheetContent from '../components/LikedRecipeSheetContent';
 import { useLikedRecipes } from '../context/LikedRecipesContext';
 import { getImageUrl } from '../constants/images';
@@ -26,6 +26,8 @@ const LIST_COLUMN_GAP = 20;
 const CARD_WIDTH = (SCREEN_WIDTH - LIST_HORIZONTAL_PADDING * 2 - LIST_COLUMN_GAP) / 2;
 const CARD_HEIGHT = CARD_WIDTH * 1.05;
 const SHEET_BACKGROUND = '#111114';
+const PRESS_RETENTION_OFFSET = { top: 6, bottom: 6, left: 6, right: 6 };
+const REMOVE_HIT_SLOP = { top: 6, bottom: 6, left: 6, right: 6 };
 
 const MEAL_COLORS: Record<DishType, string> = {
   breakfast: '#fbbf24',
@@ -79,6 +81,8 @@ export default function LikedScreen() {
       : likedRecipes.filter((recipe) =>
           recipe.dish_type?.some((meal) => selectedMeals.has(meal))
         );
+  const hasFilteredRecipes = filteredRecipes.length > 0;
+  const showListFades = hasFilteredRecipes;
 
   if (isLoading) {
     return (
@@ -117,7 +121,14 @@ export default function LikedScreen() {
     const MealIcon = primaryMeal ? MEAL_ICONS[primaryMeal] : Utensils;
 
     return (
-      <Pressable style={styles.card} onPress={() => openRecipeModal(item)}>
+      <PressableScale
+        style={styles.card}
+        onPress={() => openRecipeModal(item)}
+        pressRetentionOffset={PRESS_RETENTION_OFFSET}
+        scaleTo={0.98}
+        durationIn={50}
+        durationOut={80}
+      >
         <View style={styles.cardImageWrapper}>
           <Image
             source={{ uri: getImageUrl(item.image_name) }}
@@ -146,16 +157,21 @@ export default function LikedScreen() {
             </Text>
           </View>
         </View>
-        <Pressable
+        <PressableScale
           style={styles.removeButton}
           onPress={(event) => {
             event.stopPropagation();
             removeLikedRecipe(item.id);
           }}
+          hitSlop={REMOVE_HIT_SLOP}
+          pressRetentionOffset={PRESS_RETENTION_OFFSET}
+          scaleTo={0.9}
+          durationIn={45}
+          durationOut={70}
         >
           <Trash2 size={18} color={Colors.dark.textPrimary} />
-        </Pressable>
-      </Pressable>
+        </PressableScale>
+      </PressableScale>
     );
   };
 
@@ -186,7 +202,7 @@ export default function LikedScreen() {
           const MealIcon = MEAL_ICONS[option.id];
           const mealColor = MEAL_COLORS[option.id];
           return (
-            <TouchableOpacity
+            <PressableScale
               key={option.id}
               style={[
                 styles.filterChip,
@@ -207,7 +223,10 @@ export default function LikedScreen() {
                   return next;
                 })
               }
-              activeOpacity={0.7}
+              pressRetentionOffset={PRESS_RETENTION_OFFSET}
+              scaleTo={0.96}
+              durationIn={45}
+              durationOut={70}
             >
               <MealIcon size={14} color={isActive ? `${mealColor}90` : 'rgba(142, 142, 147, 0.6)'} />
               <Text
@@ -218,7 +237,7 @@ export default function LikedScreen() {
               >
                 {option.label}
               </Text>
-            </TouchableOpacity>
+            </PressableScale>
           );
         })}
       </ScrollView>
@@ -228,21 +247,36 @@ export default function LikedScreen() {
           renderItem={renderRecipeCard}
           keyExtractor={(item) => item.id.toString()}
           numColumns={2}
-          contentContainerStyle={styles.list}
+          ListEmptyComponent={
+            <View style={styles.emptyFilterState}>
+              <View style={styles.emptyFilterIcon}>
+                <Utensils size={22} color={Colors.dark.textSecondary} />
+              </View>
+              <Text style={styles.emptyFilterTitle}>0 recipes match your filters</Text>
+              <Text style={styles.emptyFilterText}>
+                Try selecting more meal types to see additional liked recipes.
+              </Text>
+            </View>
+          }
+          contentContainerStyle={[styles.list, !hasFilteredRecipes && styles.listEmpty]}
           columnWrapperStyle={styles.row}
           showsVerticalScrollIndicator={false}
         />
-        <LinearGradient
-          colors={['#000000', 'rgba(0,0,0,0)']}
-          style={styles.listFadeTop}
-          pointerEvents="none"
-        />
-        <View style={styles.listBlackBottom} pointerEvents="none" />
-        <LinearGradient
-          colors={['rgba(0,0,0,0)', '#000000']}
-          style={styles.listFadeBottom}
-          pointerEvents="none"
-        />
+        {showListFades && (
+          <>
+            <LinearGradient
+              colors={['#000000', 'rgba(0,0,0,0)']}
+              style={styles.listFadeTop}
+              pointerEvents="none"
+            />
+            <View style={styles.listBlackBottom} pointerEvents="none" />
+            <LinearGradient
+              colors={['rgba(0,0,0,0)', '#000000']}
+              style={styles.listFadeBottom}
+              pointerEvents="none"
+            />
+          </>
+        )}
       </View>
       <Modal
         animationType="fade"
@@ -299,6 +333,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: LIST_HORIZONTAL_PADDING,
     paddingTop: 16,
     paddingBottom: 100,
+  },
+  listEmpty: {
+    flexGrow: 1,
+    justifyContent: 'center',
   },
   listWrapper: {
     flex: 1,
@@ -460,6 +498,32 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Colors.dark.textPrimary,
     marginTop: 20,
+  },
+  emptyFilterState: {
+    paddingHorizontal: 24,
+    alignItems: 'center',
+  },
+  emptyFilterIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+  },
+  emptyFilterTitle: {
+    marginTop: 12,
+    fontSize: 17,
+    fontWeight: '700',
+    color: Colors.dark.textPrimary,
+    textAlign: 'center',
+  },
+  emptyFilterText: {
+    marginTop: 6,
+    fontSize: 14,
+    fontWeight: '500',
+    color: Colors.dark.textSecondary,
+    textAlign: 'center',
   },
   emptySubtext: {
     fontSize: 16,

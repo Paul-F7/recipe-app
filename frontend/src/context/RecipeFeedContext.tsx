@@ -1,4 +1,13 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  ReactNode,
+} from 'react';
+import { InteractionManager } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Recipe } from '../types';
 import { recipesApi } from '../api/recipes';
@@ -41,6 +50,7 @@ export function RecipeFeedProvider({ children }: { children: ReactNode }) {
 
   const { preferences, isLoading: preferencesLoading } = usePreferences();
   const [hasInitialized, setHasInitialized] = useState(false);
+  const fetchIdRef = useRef(0);
 
   // Load cached feed on mount
   useEffect(() => {
@@ -92,6 +102,8 @@ export function RecipeFeedProvider({ children }: { children: ReactNode }) {
   };
 
   const fetchInitialRecipes = useCallback(async () => {
+    const fetchId = fetchIdRef.current + 1;
+    fetchIdRef.current = fetchId;
     setIsLoading(true);
     setError(null);
 
@@ -102,19 +114,24 @@ export function RecipeFeedProvider({ children }: { children: ReactNode }) {
         diets: preferences.diets || undefined,
       });
 
+      if (fetchId !== fetchIdRef.current) return;
+
       setRecipes(newRecipes);
       setCurrentIndex(0);
       setHasMore(newRecipes.length === BATCH_SIZE);
 
-      if (newRecipes.length > 0) {
+      if (newRecipes.length > 0 && fetchId === fetchIdRef.current) {
         await saveFeedToCache(newRecipes);
       }
     } catch (err) {
+      if (fetchId !== fetchIdRef.current) return;
       const message = err instanceof Error ? err.message : 'Failed to fetch recipes';
       setError(message);
       console.error('Failed to fetch initial recipes:', err);
     } finally {
-      setIsLoading(false);
+      if (fetchId === fetchIdRef.current) {
+        setIsLoading(false);
+      }
     }
   }, [preferences.categories, preferences.diets]);
 
@@ -160,20 +177,19 @@ export function RecipeFeedProvider({ children }: { children: ReactNode }) {
     const newIndex = currentIndex + 1;
     setCurrentIndex(newIndex);
 
-    // Calculate remaining recipes
     const remaining = recipes.length - newIndex;
-
-    // Prefetch when we hit the threshold
-    if (remaining <= REFETCH_THRESHOLD && hasMore && !isFetchingMore) {
-      fetchMoreRecipes();
-    }
-
-    // Update cache with remaining recipes
     const remainingRecipes = recipes.slice(newIndex);
-    if (remainingRecipes.length > 0) {
-      saveFeedToCache(remainingRecipes);
-    }
-  }, [currentIndex, recipes, hasMore, isFetchingMore, fetchMoreRecipes]);
+
+    InteractionManager.runAfterInteractions(() => {
+      if (remaining <= REFETCH_THRESHOLD && hasMore && !isFetchingMore) {
+        fetchMoreRecipes();
+      }
+
+      if (remainingRecipes.length > 0) {
+        saveFeedToCache(remainingRecipes);
+      }
+    });
+  }, [currentIndex, recipes, hasMore, isFetchingMore, fetchMoreRecipes, saveFeedToCache]);
 
   const refreshFeed = useCallback(async () => {
     setCurrentIndex(0);
