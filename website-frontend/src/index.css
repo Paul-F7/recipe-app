@@ -1,0 +1,56 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --background: #000000;
+  --card: #0c0c0e;
+  --card-light: #161618;
+  --border: #2c2c2e;
+  --text-primary: #ffffff;
+  --text-secondary: #8e8e93;
+  --accent: #ff3b30;
+  --accent-light: rgba(255, 59, 48, 0.5);
+  --success: #34c759;
+  --gradient-start: #050704;
+  --gradient-mid: #0f1a0a;
+
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--text-primary);
+  background-color: var(--background);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background: linear-gradient(180deg, var(--gradient-start) 0%, var(--gradient-mid) 50%, var(--gradient-start) 100%);
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--success);
+}
+
+::selection {
+  background: var(--accent-light);
+  color: var(--text-primary);
+}
