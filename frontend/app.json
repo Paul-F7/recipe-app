@@ -18,6 +18,9 @@
       "icon": {
         "source": "./assets/icon.png",
         "backgroundColor": "#000000"
+      },
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -30,6 +33,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6cfe612f-169c-4868-8eb9-af22858fee5b"
+      }
     }
   }
 }

@@ -56,7 +56,7 @@ def get_recommendations(
     # if no user profile yet then return random recipes
     if not user_profiles:
         random.shuffle(unseen_recipes)
-        return unseen_recipes[:limit] # !! how does this work if profile exiss for one recipe but not another
+        return unseen_recipes[:limit] # !! how does this work if profile exists for one recipe but not another
 
 
     scored_recipes = score_recipes(unseen_recipes, user_profiles)
