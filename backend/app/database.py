@@ -21,8 +21,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL is not set")
 
-engine = create_engine(DATABASE_URL, echo=True) #this creates the database enginer(main connection to it)
-#echo=True prints SQLqueries to consolve for debuggging
+engine = create_engine(DATABASE_URL, echo=False) #this creates the database enginer(main connection to it)
 
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False) #autofulsh dont automatically save changs, autocommit is commit transactions
 # creates a factory that makes database sessions, bind=engine connects session to db

@@ -47,7 +47,8 @@ def get_recommendations(
         db,
         user_id,
         categories=preferences.categories,
-        diets=preferences.diets
+        diets=preferences.diets,
+        limit=200
     )
 
     if not unseen_recipes:

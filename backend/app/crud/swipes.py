@@ -47,26 +47,28 @@ def create_swipe(
 
 # get liked swipes for specific user, returns list of swipes
 def get_liked_swipes(
-    db: Session, 
-    user_id: int
+    db: Session,
+    user_id: int,
+    limit: int = 100
 ):
     query = db.query(Swipe).filter(
         Swipe.user_id == user_id,
         Swipe.liked == True
-    )
-      
+    ).limit(limit)
+
     return query.all()
 
-# get liked swipes for specific user, returns list of swipes
+# get disliked swipes for specific user, returns list of swipes
 def get_disliked_swipes(
-    db: Session, 
-    user_id: int
+    db: Session,
+    user_id: int,
+    limit: int = 100
 ):
     query = db.query(Swipe).filter(
         Swipe.user_id == user_id,
         Swipe.liked == False
-    )
-    
+    ).limit(limit)
+
     return query.all()
 
 
