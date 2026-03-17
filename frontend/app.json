@@ -38,6 +38,9 @@
       "eas": {
         "projectId": "6cfe612f-169c-4868-8eb9-af22858fee5b"
       }
-    }
+    },
+    "plugins": [
+      ["react-native-app-clip", { "name": "FlavorFlick" }]
+    ]
   }
 }
