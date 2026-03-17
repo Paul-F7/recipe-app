@@ -64,6 +64,8 @@ function App() {
                     loop
                     muted
                     playsInline
+                    preload="auto"
+                    poster={screen01}
                     className="phone-video"
                   />
                 </div>
