@@ -1,7 +1,7 @@
 import './App.css'
 import appIcon from './assets/icon.png'
 
-const demoVideo = 'https://pub-3ce29bd0907b4d8faca7717476022259.r2.dev/usethis.mov'
+const demoVideo = 'https://pub-3ce29bd0907b4d8faca7717476022259.r2.dev/usethis.mp4'
 import screen01 from './assets/01.png'
 import screen02 from './assets/02.png'
 import screen03 from './assets/03.png'
