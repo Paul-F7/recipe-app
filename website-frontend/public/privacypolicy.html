@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy – FlavorFlick</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    max-width: 760px;
+    margin: 2rem auto;
+    padding: 0 1.25rem;
+    color: #222;
+    line-height: 1.6;
+  }
+  h1 { font-size: 1.9rem; margin-bottom: 0.25rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; }
+  .meta { color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #ddd; padding: 0.5rem 0.75rem; text-align: left; font-size: 0.95rem; }
+  th { background: #f7f7f7; }
+  a { color: #0366d6; }
+  hr { border: none; border-top: 1px solid #eee; margin: 2rem 0; }
+</style>
+</head>
+<body>
+
+<h1>Privacy Policy for FlavorFlick</h1>
+<p class="meta"><strong>Effective Date:</strong> April 21, 2026 &nbsp;|&nbsp; <strong>Last Updated:</strong> April 21, 2026</p>
+
+<p>FlavorFlick ("we," "us," or "our") operates the FlavorFlick mobile application and the website at <a href="https://flavorflick.ca">flavorflick.ca</a> (together, the "Service"). This Privacy Policy explains what information we collect, how we use it, and the choices you have. By using the Service, you agree to the collection and use of information in accordance with this policy.</p>
+
+<hr>
+
+<h2>1. Information We Collect</h2>
+<p>FlavorFlick is designed to minimize the personal data we collect. We do <strong>not</strong> require you to create an account, and we do <strong>not</strong> ask for your name, email address, phone number, or password.</p>
+
+<h3>1.1 Device Identifier</h3>
+<p>When you first launch the app, a random, anonymous UUID is generated and stored on your device. This identifier lets us associate your swipe history with your device so we can build your taste profile. It is not linked to your real-world identity.</p>
+
+<h3>1.2 Swipe and Preference Data</h3>
+<p>We record interactions you make within the app, including:</p>
+<ul>
+  <li>Recipes you swipe left (dislike) or right (like)</li>
+  <li>Meal category and dietary filter selections</li>
+  <li>A snapshot of the taste vector associated with swiped recipes</li>
+</ul>
+<p>This data is used solely to generate personalized recipe recommendations.</p>
+
+<h3>1.3 Technical and Usage Data</h3>
+<p>Our infrastructure (AWS, Cloudflare, Supabase) may automatically log standard request metadata, such as IP address, device type, operating system, app version, and the timestamp and endpoint of API requests. These logs are used for security, abuse prevention, performance monitoring, and debugging.</p>
+
+<h3>1.4 Information We Do NOT Collect</h3>
+<ul>
+  <li>We do not collect your name, email, phone number, or address.</li>
+  <li>We do not access your contacts, photos, microphone, or precise location.</li>
+  <li>We do not use advertising identifiers or third-party ad SDKs.</li>
+  <li>We do not track you across other apps or websites.</li>
+</ul>
+
+<h2>2. How We Use Your Information</h2>
+<ul>
+  <li>Provide and maintain the Service</li>
+  <li>Generate personalized recipe recommendations using our taste-matching algorithm</li>
+  <li>Remember your liked recipes and filter preferences</li>
+  <li>Diagnose and fix bugs, and improve app performance</li>
+  <li>Protect against fraud, abuse, and unauthorized access</li>
+</ul>
+<p>We do <strong>not</strong> sell, rent, or trade your information to third parties. We do not use your data for advertising.</p>
+
+<h2>3. How Your Data Is Stored</h2>
+<ul>
+  <li><strong>Application backend:</strong> Hosted on Amazon Web Services (AWS) EC2 infrastructure.</li>
+  <li><strong>Database:</strong> PostgreSQL managed by Supabase, with automatic backups and encryption at rest.</li>
+  <li><strong>Network:</strong> Traffic between the app and our servers is encrypted in transit using TLS, with DNS and CDN services provided by Cloudflare.</li>
+</ul>
+<p>Your swipe history is associated only with the anonymous device UUID, not with any personally identifiable information.</p>
+
+<h2>4. Third-Party Service Providers</h2>
+<table>
+  <thead>
+    <tr><th>Provider</th><th>Purpose</th><th>Data Processed</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Amazon Web Services (AWS)</td><td>Backend hosting</td><td>API request data, server logs</td></tr>
+    <tr><td>Supabase</td><td>Managed PostgreSQL database</td><td>Device UUIDs, swipe history</td></tr>
+    <tr><td>Cloudflare</td><td>DNS, CDN, SSL, DDoS protection</td><td>IP addresses, request metadata</td></tr>
+    <tr><td>Expo / Expo EAS</td><td>App build and delivery platform</td><td>Crash and build diagnostics</td></tr>
+    <tr><td>Apple App Store / Google Play</td><td>App distribution</td><td>Standard store analytics (per their policies)</td></tr>
+  </tbody>
+</table>
+<p>We encourage you to review the privacy policies of these providers.</p>
+
+<h2>5. Data Retention</h2>
+<ul>
+  <li><strong>Swipe and preference data</strong> is retained for as long as your device UUID is active in the app. If you uninstall the app or clear app data, a new UUID will be generated on next launch, and previous swipe history will remain orphaned in our database.</li>
+  <li><strong>Server logs</strong> are retained for up to 90 days for security and debugging purposes.</li>
+  <li>You may request deletion of any data associated with your device UUID at any time (see Section 7).</li>
+</ul>
+
+<h2>6. Children's Privacy</h2>
+<p>FlavorFlick is not directed to children under the age of 13 (or the equivalent minimum age in your jurisdiction). We do not knowingly collect personal information from children. If you believe a child has provided us with information, please contact us and we will delete it.</p>
+
+<h2>7. Your Rights and Choices</h2>
+<p>Depending on your jurisdiction (including GDPR for EEA residents and CCPA/CPRA for California residents), you may have the right to:</p>
+<ul>
+  <li>Access the data associated with your device UUID</li>
+  <li>Request correction or deletion of that data</li>
+  <li>Object to or restrict certain processing</li>
+  <li>Lodge a complaint with your local data protection authority</li>
+</ul>
+<p>Because we do not collect personally identifying information, we identify your data using the device UUID. To make a request, email us at the address below and include the UUID from the app's Settings screen. You can also stop all data collection at any time by uninstalling the app.</p>
+
+<h2>8. Security</h2>
+<p>We use industry-standard safeguards — including TLS encryption, database access controls, and encrypted storage at rest — to protect your information. However, no method of transmission or storage over the Internet is 100% secure, and we cannot guarantee absolute security.</p>
+
+<h2>9. International Data Transfers</h2>
+<p>Our servers are located in the United States. If you access the Service from outside the United States, your information may be transferred to, stored, and processed in a country whose data protection laws differ from those of your jurisdiction.</p>
+
+<h2>10. Changes to This Privacy Policy</h2>
+<p>We may update this Privacy Policy from time to time. When we do, we will revise the "Last Updated" date at the top of this page. Material changes will be communicated via an in-app notice or update to the app listing. Your continued use of the Service after changes take effect constitutes acceptance of the revised policy.</p>
+
+<h2>11. Contact Us</h2>
+<p>If you have questions or requests regarding this Privacy Policy or your data, please contact:</p>
+<p>
+  <strong>FlavorFlick</strong><br>
+  Email: <a href="mailto:paul.fomitchev@gmail.com">paul.fomitchev@gmail.com</a><br>
+  Website: <a href="https://flavorflick.ca">https://flavorflick.ca</a>
+</p>
+
+</body>
+</html>
