@@ -6,6 +6,7 @@ import { Heart, Compass, Settings } from 'lucide-react-native';
 
 import { Colors } from '../constants/theme';
 import PressableScale from './PressableScale';
+import { TAB_BAR_MAX_WIDTH } from '../constants/responsive';
 
 const CENTER_ROUTE = 'Discovery';
 const PRESS_RETENTION_OFFSET = { top: 8, bottom: 8, left: 8, right: 8 };
@@ -128,9 +129,12 @@ const styles = StyleSheet.create({
     right: 0,
     paddingHorizontal: 20,
     paddingBottom: 22,
+    alignItems: 'center',
   },
   tabBar: {
     flexDirection: 'row',
+    width: '100%',
+    maxWidth: TAB_BAR_MAX_WIDTH,
     backgroundColor: Colors.dark.card,
     borderRadius: 28,
     paddingVertical: 10,

@@ -20,6 +20,7 @@ import LoadingAnimation from '../components/LoadingAnimation';
 import { useSwipe } from '../hooks/useSwipe';
 import { useRecipeFeed } from '../context/RecipeFeedContext';
 import { getImageUrl } from '../constants/images';
+import { CARD_MAX_WIDTH, CARD_MAX_HEIGHT } from '../constants/responsive';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const SWIPE_THRESHOLD = 80;
@@ -354,7 +355,9 @@ export default function HomeScreen() {
         pointerEvents="none"
         style={[styles.swipeBackdrop, { opacity: swipeBackdropOpacity }]}
       />
-      <View style={styles.cardsContainer}>{renderCards()}</View>
+      <View style={styles.cardsContainer}>
+        <View style={styles.cardStage}>{renderCards()}</View>
+      </View>
     </View>
   );
 }
@@ -366,6 +369,12 @@ const styles = StyleSheet.create({
   },
   cardsContainer: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardStage: {
+    width: CARD_MAX_WIDTH,
+    height: CARD_MAX_HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',
   },

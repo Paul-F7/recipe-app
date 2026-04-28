@@ -19,12 +19,20 @@ import LikedRecipeSheetContent from '../components/LikedRecipeSheetContent';
 import { useLikedRecipes } from '../context/LikedRecipesContext';
 import { getImageUrl } from '../constants/images';
 import { DishType, Recipe } from '../types';
+import { isTablet, CONTENT_MAX_WIDTH } from '../constants/responsive';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const LIST_HORIZONTAL_PADDING = 20;
 const LIST_COLUMN_GAP = 20;
-const CARD_WIDTH = (SCREEN_WIDTH - LIST_HORIZONTAL_PADDING * 2 - LIST_COLUMN_GAP) / 2;
+const NUM_COLUMNS = isTablet ? 3 : 2;
+const LIST_CONTAINER_WIDTH = isTablet
+  ? Math.min(SCREEN_WIDTH, 760)
+  : SCREEN_WIDTH;
+const CARD_WIDTH =
+  (LIST_CONTAINER_WIDTH - LIST_HORIZONTAL_PADDING * 2 - LIST_COLUMN_GAP * (NUM_COLUMNS - 1)) /
+  NUM_COLUMNS;
 const CARD_HEIGHT = CARD_WIDTH * 1.05;
+const SHEET_MAX_WIDTH = isTablet ? 640 : SCREEN_WIDTH;
 const SHEET_BACKGROUND = '#111114';
 const PRESS_RETENTION_OFFSET = { top: 6, bottom: 6, left: 6, right: 6 };
 const REMOVE_HIT_SLOP = { top: 6, bottom: 6, left: 6, right: 6 };
@@ -246,7 +254,7 @@ export default function LikedScreen() {
           data={filteredRecipes}
           renderItem={renderRecipeCard}
           keyExtractor={(item) => item.id.toString()}
-          numColumns={2}
+          numColumns={NUM_COLUMNS}
           ListEmptyComponent={
             <View style={styles.emptyFilterState}>
               <View style={styles.emptyFilterIcon}>
@@ -333,6 +341,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: LIST_HORIZONTAL_PADDING,
     paddingTop: 16,
     paddingBottom: 100,
+    width: LIST_CONTAINER_WIDTH,
+    alignSelf: 'center',
   },
   listEmpty: {
     flexGrow: 1,
@@ -341,6 +351,8 @@ const styles = StyleSheet.create({
   listWrapper: {
     flex: 1,
     position: 'relative',
+    width: '100%',
+    alignItems: 'center',
   },
   listFadeTop: {
     position: 'absolute',
@@ -373,6 +385,8 @@ const styles = StyleSheet.create({
   filterScrollContent: {
     paddingHorizontal: 16,
     gap: 10,
+    flexGrow: 1,
+    justifyContent: 'center',
   },
   filterChip: {
     flexDirection: 'row',
@@ -391,7 +405,8 @@ const styles = StyleSheet.create({
     color: 'rgba(142, 142, 147, 0.7)',
   },
   row: {
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+    gap: LIST_COLUMN_GAP,
     marginBottom: 20,
   },
   card: {
@@ -470,13 +485,17 @@ const styles = StyleSheet.create({
   modalBackdrop: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    justifyContent: 'flex-end',
+    justifyContent: isTablet ? 'center' : 'flex-end',
+    alignItems: 'center',
   },
   modalSheet: {
     width: '100%',
-    height: '82%',
+    maxWidth: SHEET_MAX_WIDTH,
+    height: isTablet ? '78%' : '82%',
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
+    borderBottomLeftRadius: isTablet ? 28 : 0,
+    borderBottomRightRadius: isTablet ? 28 : 0,
     backgroundColor: SHEET_BACKGROUND,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.08)',

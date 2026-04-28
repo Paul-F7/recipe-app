@@ -1,12 +1,11 @@
 import React, { memo } from 'react';
-import { StyleSheet, Animated, Dimensions, View } from 'react-native';
+import { StyleSheet, Animated, View } from 'react-native';
 import { Heart, X } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
 
 import { Recipe } from '../types';
 import RecipeCard from './RecipeCard';
-
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+import { CARD_MAX_WIDTH, CARD_MAX_HEIGHT } from '../constants/responsive';
 
 interface SwipeableCardProps {
   recipe: Recipe;
@@ -89,8 +88,8 @@ export default memo(SwipeableCard);
 const styles = StyleSheet.create({
   cardContainer: {
     position: 'absolute',
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
+    width: CARD_MAX_WIDTH,
+    height: CARD_MAX_HEIGHT,
     borderRadius: 34,
     overflow: 'hidden',
   },

@@ -7,6 +7,7 @@ import { BlurView } from 'expo-blur';
 import { Colors } from '../constants/theme';
 import { Recipe } from '../types';
 import { getImageUrl } from '../constants/images';
+import { isTablet } from '../constants/responsive';
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -247,9 +248,8 @@ function RecipeCard({ recipe }: RecipeCardProps) {
 
 export default memo(RecipeCard);
 
-const CARD_IMAGE_HEIGHT = 280;
-const HEADER_TOP_OFFSET = 220;
-const HEADER_OVERLAP = CARD_IMAGE_HEIGHT - HEADER_TOP_OFFSET;
+const CARD_IMAGE_HEIGHT = isTablet ? 360 : 280;
+const HEADER_OVERLAP = isTablet ? 76 : 60;
 const CONTENT_TOP_PADDING = 14;
 const CONTENT_TOP_BLUR_HEIGHT = 12;
 const CONTENT_TOP_BLUR_FEATHER_HEIGHT = 10;

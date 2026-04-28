@@ -18,6 +18,7 @@ import { Colors } from '../constants/theme';
 import PressableScale from '../components/PressableScale';
 import { DishType, DietType } from '../types';
 import { usePreferences } from '../context/PreferencesContext';
+import { CONTENT_MAX_WIDTH } from '../constants/responsive';
 
 const dishTypes: { id: DishType; label: string; icon: typeof Settings; color: string }[] = [
   { id: 'breakfast', label: 'Breakfast', icon: Coffee, color: '#fbbf24' },
@@ -194,10 +195,14 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+    width: '100%',
   },
   content: {
     padding: 20,
     paddingBottom: 120,
+    width: '100%',
+    maxWidth: CONTENT_MAX_WIDTH,
+    alignSelf: 'center',
   },
   section: {
     marginBottom: 32,
