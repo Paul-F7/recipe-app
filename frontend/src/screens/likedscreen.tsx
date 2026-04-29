@@ -126,11 +126,15 @@ export default function LikedScreen() {
           <Heart size={80} color={Colors.dark.textSecondary} />
           <Text style={styles.emptyTitle}>No liked recipes yet</Text>
           <Text style={styles.emptySubtext}>
-            Swipe right on recipes you love to save them here
+            Browse recipes, then swipe right to save your favorites here
           </Text>
           <PressableScale
             style={styles.startSwipingButton}
             onPress={() => navigation.navigate('Discovery')}
+            accessibilityRole="button"
+            accessibilityLabel="Start swiping recipes"
+            accessibilityHint="Opens recipe discovery so you can find recipes to like"
+            pressRetentionOffset={PRESS_RETENTION_OFFSET}
             scaleTo={0.97}
             durationIn={50}
             durationOut={80}
@@ -141,8 +145,8 @@ export default function LikedScreen() {
               end={{ x: 1, y: 1 }}
               style={StyleSheet.absoluteFill}
             />
-            <Text style={styles.startSwipingButtonText}>Start swiping</Text>
-            <ArrowRight size={15} color={Colors.dark.success} strokeWidth={2.25} />
+            <Text style={styles.startSwipingButtonText}>Start swiping recipes</Text>
+            <ArrowRight size={18} color={Colors.dark.success} strokeWidth={2.5} />
           </PressableScale>
         </View>
       </View>
@@ -579,25 +583,33 @@ const styles = StyleSheet.create({
     color: Colors.dark.textSecondary,
     marginTop: 8,
     textAlign: 'center',
+    lineHeight: 22,
   },
   startSwipingButton: {
-    marginTop: 32,
+    marginTop: 30,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 10,
-    paddingVertical: 14,
-    paddingHorizontal: 22,
-    borderRadius: 12,
+    minHeight: 66,
+    minWidth: isTablet ? 320 : 286,
+    paddingVertical: 19,
+    paddingHorizontal: 28,
+    borderRadius: 22,
     overflow: 'hidden',
     backgroundColor: '#0c0f0c',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.06)',
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+    shadowColor: Colors.dark.success,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.08,
+    shadowRadius: 14,
+    elevation: 4,
   },
   startSwipingButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: '700',
     color: Colors.dark.textPrimary,
-    letterSpacing: 0.3,
   },
   loadingText: {
     color: Colors.dark.textSecondary,
