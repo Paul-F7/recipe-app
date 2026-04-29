@@ -12,6 +12,7 @@ import {
 import { ChefHat, Leaf, RefreshCw } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
 import { Colors } from '../constants/theme';
 import PressableScale from '../components/PressableScale';
@@ -20,7 +21,8 @@ import LoadingAnimation from '../components/LoadingAnimation';
 import { useSwipe } from '../hooks/useSwipe';
 import { useRecipeFeed } from '../context/RecipeFeedContext';
 import { getImageUrl } from '../constants/images';
-import { CARD_MAX_WIDTH, CARD_MAX_HEIGHT } from '../constants/responsive';
+import { CARD_MAX_WIDTH, CARD_MAX_HEIGHT, isTablet } from '../constants/responsive';
+import type { RootTabParamList } from '../components/tabnavigator';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const SWIPE_THRESHOLD = 80;
@@ -31,9 +33,10 @@ const SWIPE_VERTICAL_SLOP = 14;
 const SWIPE_RELEASE_VELOCITY = 0.25;
 const PREFETCH_AHEAD = 3;
 const PRESS_RETENTION_OFFSET = { top: 8, bottom: 8, left: 8, right: 8 };
+type HomeScreenNavigationProp = BottomTabNavigationProp<RootTabParamList, 'Discovery'>;
 
 export default function HomeScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<HomeScreenNavigationProp>();
   const { recipes, currentIndex, isLoading, error, refreshFeed, isFetchingMore } = useRecipeFeed();
   const { recordSwipe } = useSwipe();
   const position = useMemo(() => new Animated.Value(0), [currentIndex]);
@@ -369,7 +372,7 @@ const styles = StyleSheet.create({
   },
   cardsContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: isTablet ? 'flex-start' : 'center',
     alignItems: 'center',
   },
   cardStage: {

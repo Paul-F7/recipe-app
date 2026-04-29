@@ -7,8 +7,13 @@ import LikedScreen from '../screens/likedscreen';
 import SettingsScreen from '../screens/settingscreen'; //change in the file
 import CustomTabBar from './CustomTabBar';
 
+export type RootTabParamList = {
+  Liked: undefined;
+  Discovery: undefined;
+  Preferences: undefined;
+};
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<RootTabParamList>();
 
 export default function TabNavigator() {
   return (

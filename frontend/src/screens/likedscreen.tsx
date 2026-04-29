@@ -10,8 +10,12 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import { Coffee, CupSoda, Heart, IceCream, Sandwich, Trash2, Utensils } from 'lucide-react-native';
+import { ArrowRight, Coffee, CupSoda, Heart, IceCream, Sandwich, Trash2, Utensils } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+
+import type { RootTabParamList } from './../components/tabnavigator';
 
 import { Colors } from '../constants/theme';
 import PressableScale from '../components/PressableScale';
@@ -36,6 +40,12 @@ const SHEET_MAX_WIDTH = isTablet ? 640 : SCREEN_WIDTH;
 const SHEET_BACKGROUND = '#111114';
 const PRESS_RETENTION_OFFSET = { top: 6, bottom: 6, left: 6, right: 6 };
 const REMOVE_HIT_SLOP = { top: 6, bottom: 6, left: 6, right: 6 };
+const FILTER_SCROLL_MAX_HEIGHT = isTablet ? 54 : 34;
+const FILTER_CHIP_ICON_SIZE = isTablet ? 20 : 14;
+const FILTER_CHIP_PADDING_VERTICAL = isTablet ? 10 : 5;
+const FILTER_CHIP_PADDING_HORIZONTAL = isTablet ? 16 : 10;
+const FILTER_CHIP_RADIUS = isTablet ? 20 : 14;
+const FILTER_CHIP_LABEL_SIZE = isTablet ? 16 : 12;
 
 const MEAL_COLORS: Record<DishType, string> = {
   breakfast: '#fbbf24',
@@ -70,6 +80,7 @@ const MEAL_OPTIONS: { id: DishType; label: string }[] = [
 
 export default function LikedScreen() {
   const { likedRecipes, removeLikedRecipe, isLoading } = useLikedRecipes();
+  const navigation = useNavigation<BottomTabNavigationProp<RootTabParamList>>();
   const [selectedMeals, setSelectedMeals] = useState<Set<DishType>>(
     new Set<DishType>(['breakfast', 'lunch', 'dinner', 'dessert', 'drink'])
   );
@@ -117,6 +128,22 @@ export default function LikedScreen() {
           <Text style={styles.emptySubtext}>
             Swipe right on recipes you love to save them here
           </Text>
+          <PressableScale
+            style={styles.startSwipingButton}
+            onPress={() => navigation.navigate('Discovery')}
+            scaleTo={0.97}
+            durationIn={50}
+            durationOut={80}
+          >
+            <LinearGradient
+              colors={['rgba(52, 199, 89, 0.18)', 'rgba(52, 199, 89, 0.04)']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={StyleSheet.absoluteFill}
+            />
+            <Text style={styles.startSwipingButtonText}>Start swiping</Text>
+            <ArrowRight size={15} color={Colors.dark.success} strokeWidth={2.25} />
+          </PressableScale>
         </View>
       </View>
     );
@@ -236,7 +263,10 @@ export default function LikedScreen() {
               durationIn={45}
               durationOut={70}
             >
-              <MealIcon size={14} color={isActive ? `${mealColor}90` : 'rgba(142, 142, 147, 0.6)'} />
+              <MealIcon
+                size={FILTER_CHIP_ICON_SIZE}
+                color={isActive ? `${mealColor}90` : 'rgba(142, 142, 147, 0.6)'}
+              />
               <Text
                 style={[
                   styles.filterChipLabel,
@@ -379,7 +409,7 @@ const styles = StyleSheet.create({
     zIndex: 5,
   },
   filterScroll: {
-    maxHeight: 34,
+    maxHeight: FILTER_SCROLL_MAX_HEIGHT,
     marginBottom: 8,
   },
   filterScrollContent: {
@@ -391,17 +421,17 @@ const styles = StyleSheet.create({
   filterChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 14,
+    gap: isTablet ? 8 : 5,
+    paddingVertical: FILTER_CHIP_PADDING_VERTICAL,
+    paddingHorizontal: FILTER_CHIP_PADDING_HORIZONTAL,
+    borderRadius: FILTER_CHIP_RADIUS,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.08)',
     backgroundColor: 'rgba(255, 255, 255, 0.03)',
   },
   filterChipLabel: {
-    fontSize: 12,
-    fontWeight: '500',
+    fontSize: FILTER_CHIP_LABEL_SIZE,
+    fontWeight: isTablet ? '600' : '500',
     color: 'rgba(142, 142, 147, 0.7)',
   },
   row: {
@@ -549,6 +579,25 @@ const styles = StyleSheet.create({
     color: Colors.dark.textSecondary,
     marginTop: 8,
     textAlign: 'center',
+  },
+  startSwipingButton: {
+    marginTop: 32,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: 14,
+    paddingHorizontal: 22,
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: '#0c0f0c',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.06)',
+  },
+  startSwipingButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: Colors.dark.textPrimary,
+    letterSpacing: 0.3,
   },
   loadingText: {
     color: Colors.dark.textSecondary,

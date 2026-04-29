@@ -6,11 +6,20 @@ import { Heart, Compass, Settings } from 'lucide-react-native';
 
 import { Colors } from '../constants/theme';
 import PressableScale from './PressableScale';
-import { TAB_BAR_MAX_WIDTH } from '../constants/responsive';
+import { isCompactTabletWindow, isTablet, TAB_BAR_MAX_WIDTH } from '../constants/responsive';
 
 const CENTER_ROUTE = 'Discovery';
 const PRESS_RETENTION_OFFSET = { top: 8, bottom: 8, left: 8, right: 8 };
 const HIT_SLOP = { top: 6, bottom: 6, left: 6, right: 6 };
+const CENTER_ICON_SIZE = isTablet ? (isCompactTabletWindow ? 34 : 36) : 30;
+const SIDE_ICON_SIZE = isTablet ? (isCompactTabletWindow ? 30 : 32) : 26;
+const TAB_HORIZONTAL_PADDING = isTablet ? 20 : 20;
+const TAB_BOTTOM_PADDING = isTablet ? (isCompactTabletWindow ? 18 : 22) : 22;
+const TAB_BAR_VERTICAL_PADDING = isTablet ? (isCompactTabletWindow ? 14 : 16) : 10;
+const TAB_BAR_HORIZONTAL_PADDING = isTablet ? 18 : 16;
+const SIDE_BUTTON_SIZE = isTablet ? (isCompactTabletWindow ? 62 : 66) : 48;
+const CENTER_BUTTON_SIZE = isTablet ? (isCompactTabletWindow ? 86 : 94) : 72;
+const CENTER_BUTTON_OFFSET = isTablet ? (isCompactTabletWindow ? -40 : -46) : -32;
 
 export default function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   return (
@@ -67,8 +76,6 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
                 scaleTo={0.97}
                 durationIn={28}
                 durationOut={55}
-                delayPressIn={0}
-                delayPressOut={0}
               >
                 <View style={[styles.centerButtonOuter, isFocused && styles.centerButtonOuterActive]}>
                   <LinearGradient
@@ -82,7 +89,7 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
                     end={{ x: 1, y: 1 }}
                   >
                     <Icon
-                      size={30}
+                      size={CENTER_ICON_SIZE}
                       color={iconColor}
                       fill={iconFill}
                     />
@@ -107,11 +114,9 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
               scaleTo={0.96}
               durationIn={24}
               durationOut={50}
-              delayPressIn={0}
-              delayPressOut={0}
             >
               <View style={[styles.tabIconContainer, isFocused && styles.tabIconContainerActive]}>
-                <Icon size={26} color={iconColor} fill={iconFill} />
+                <Icon size={SIDE_ICON_SIZE} color={iconColor} fill={iconFill} />
               </View>
             </PressableScale>
           );
@@ -127,8 +132,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    paddingHorizontal: 20,
-    paddingBottom: 22,
+    paddingHorizontal: TAB_HORIZONTAL_PADDING,
+    paddingBottom: TAB_BOTTOM_PADDING,
     alignItems: 'center',
   },
   tabBar: {
@@ -137,8 +142,8 @@ const styles = StyleSheet.create({
     maxWidth: TAB_BAR_MAX_WIDTH,
     backgroundColor: Colors.dark.card,
     borderRadius: 28,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
+    paddingVertical: TAB_BAR_VERTICAL_PADDING,
+    paddingHorizontal: TAB_BAR_HORIZONTAL_PADDING,
     alignItems: 'center',
     justifyContent: 'space-around',
     borderWidth: 1,
@@ -156,9 +161,9 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
   },
   tabIconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: SIDE_BUTTON_SIZE,
+    height: SIDE_BUTTON_SIZE,
+    borderRadius: SIDE_BUTTON_SIZE / 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -168,13 +173,13 @@ const styles = StyleSheet.create({
   centerButtonContainer: {
     flex: 1,
     alignItems: 'center',
-    marginTop: -32,
+    marginTop: CENTER_BUTTON_OFFSET,
   },
   centerButtonOuter: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-    padding: 4,
+    width: CENTER_BUTTON_SIZE,
+    height: CENTER_BUTTON_SIZE,
+    borderRadius: CENTER_BUTTON_SIZE / 2,
+    padding: isTablet ? 3 : 4,
     backgroundColor: Colors.dark.background,
     shadowColor: Colors.dark.shadow,
     shadowOffset: { width: 0, height: 10 },
@@ -191,7 +196,7 @@ const styles = StyleSheet.create({
   },
   centerButton: {
     flex: 1,
-    borderRadius: 32,
+    borderRadius: CENTER_BUTTON_SIZE / 2 - (isTablet ? 3 : 4),
     alignItems: 'center',
     justifyContent: 'center',
   },

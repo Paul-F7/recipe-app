@@ -7,7 +7,7 @@ import { BlurView } from 'expo-blur';
 import { Colors } from '../constants/theme';
 import { Recipe } from '../types';
 import { getImageUrl } from '../constants/images';
-import { isTablet } from '../constants/responsive';
+import { isCompactTabletWindow, isTablet } from '../constants/responsive';
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -248,8 +248,23 @@ function RecipeCard({ recipe }: RecipeCardProps) {
 
 export default memo(RecipeCard);
 
-const CARD_IMAGE_HEIGHT = isTablet ? 360 : 280;
-const HEADER_OVERLAP = isTablet ? 76 : 60;
+const CARD_IMAGE_HEIGHT = isTablet ? (isCompactTabletWindow ? 360 : 430) : 280;
+const HEADER_OVERLAP = isTablet ? (isCompactTabletWindow ? 72 : 88) : 60;
+const CARD_HORIZONTAL_PADDING = isTablet ? 28 : 24;
+const CARD_TITLE_SIZE = isTablet ? (isCompactTabletWindow ? 38 : 42) : 28;
+const SECTION_TITLE_SIZE = isTablet ? (isCompactTabletWindow ? 25 : 26) : 20;
+const INGREDIENTS_TITLE_SIZE = isTablet ? (isCompactTabletWindow ? 27 : 28) : 22;
+const TAG_TEXT_SIZE = isTablet ? 15 : 11;
+const INGREDIENT_CHIP_TEXT_SIZE = isTablet ? 16 : 12;
+const INGREDIENT_CHIP_LINE_HEIGHT = isTablet ? 24 : 18;
+const INSTRUCTION_TEXT_SIZE = isTablet ? 17 : 13;
+const INSTRUCTION_LINE_HEIGHT = isTablet ? 25 : 19;
+const CARD_BOTTOM_CONTENT_PADDING = isTablet ? 180 : 120;
+const BOTTOM_NAV_FADE_HEIGHT = isTablet ? 190 : 150;
+const BOTTOM_NAV_BLUR_SOFT_HEIGHT = isTablet ? 190 : 150;
+const BOTTOM_NAV_BLUR_MID_HEIGHT = isTablet ? 155 : 125;
+const BOTTOM_NAV_BLUR_STRONG_HEIGHT = isTablet ? 120 : 95;
+const BOTTOM_NAV_BLUR_FEATHER_BOTTOM = isTablet ? 108 : 90;
 const CONTENT_TOP_PADDING = 14;
 const CONTENT_TOP_BLUR_HEIGHT = 12;
 const CONTENT_TOP_BLUR_FEATHER_HEIGHT = 10;
@@ -288,12 +303,12 @@ const styles = StyleSheet.create({
   },
   cardHeader: {
     marginTop: -HEADER_OVERLAP,
-    paddingHorizontal: 24,
+    paddingHorizontal: CARD_HORIZONTAL_PADDING,
     paddingBottom: 8,
     zIndex: 10,
   },
   cardTitle: {
-    fontSize: 28,
+    fontSize: CARD_TITLE_SIZE,
     fontWeight: '700',
     color: Colors.dark.textPrimary,
     marginBottom: 8,
@@ -320,12 +335,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   tagText: {
-    fontSize: 11,
+    fontSize: TAG_TEXT_SIZE,
     fontWeight: '600',
   },
   cardContent: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: CARD_HORIZONTAL_PADDING,
     paddingTop: CONTENT_TOP_PADDING,
     paddingBottom: 22,
   },
@@ -358,7 +373,7 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
   cardContentContainer: {
-    paddingBottom: 120,
+    paddingBottom: CARD_BOTTOM_CONTENT_PADDING,
   },
   section: {
     marginBottom: 24,
@@ -372,12 +387,12 @@ const styles = StyleSheet.create({
   ingredientsSection: {
     backgroundColor: Colors.dark.cardLight,
     borderRadius: 20,
-    padding: 16,
+    padding: isTablet ? 18 : 16,
     borderWidth: 1,
     borderColor: 'rgba(148, 163, 184, 0.2)',
   },
   ingredientsTitle: {
-    fontSize: 22,
+    fontSize: INGREDIENTS_TITLE_SIZE,
     fontWeight: '700',
     color: Colors.dark.textPrimary,
     letterSpacing: 0.2,
@@ -411,7 +426,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(245, 158, 11, 0.15)',
   },
   instructionsTitle: {
-    fontSize: 20,
+    fontSize: SECTION_TITLE_SIZE,
     fontWeight: '700',
     color: Colors.dark.textPrimary,
   },
@@ -422,8 +437,8 @@ const styles = StyleSheet.create({
   },
   ingredientChip: {
     alignSelf: 'flex-start',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    paddingVertical: isTablet ? 9 : 8,
+    paddingHorizontal: isTablet ? 14 : 12,
     borderRadius: 14,
     backgroundColor: 'rgba(255, 255, 255, 0.06)',
     borderWidth: 1,
@@ -432,8 +447,8 @@ const styles = StyleSheet.create({
   },
   ingredientChipText: {
     color: Colors.dark.textPrimary,
-    fontSize: 12,
-    lineHeight: 18,
+    fontSize: INGREDIENT_CHIP_TEXT_SIZE,
+    lineHeight: INGREDIENT_CHIP_LINE_HEIGHT,
     fontWeight: '600',
     flexShrink: 1,
   },
@@ -472,15 +487,15 @@ const styles = StyleSheet.create({
   },
   instructionText: {
     color: Colors.dark.textPrimary,
-    fontSize: 13,
-    lineHeight: 19,
+    fontSize: INSTRUCTION_TEXT_SIZE,
+    lineHeight: INSTRUCTION_LINE_HEIGHT,
   },
   bottomNavBlurSoft: {
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
-    height: 150,
+    height: BOTTOM_NAV_BLUR_SOFT_HEIGHT,
     opacity: 0.28,
     zIndex: 18,
   },
@@ -488,7 +503,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: 90,
+    bottom: BOTTOM_NAV_BLUR_FEATHER_BOTTOM,
     height: 50,
     opacity: 0.2,
     zIndex: 17,
@@ -498,7 +513,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: 125,
+    height: BOTTOM_NAV_BLUR_MID_HEIGHT,
     opacity: 0.45,
     zIndex: 19,
   },
@@ -507,7 +522,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: 95,
+    height: BOTTOM_NAV_BLUR_STRONG_HEIGHT,
     opacity: 0.72,
     zIndex: 20,
   },
@@ -516,7 +531,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: 150,
+    height: BOTTOM_NAV_FADE_HEIGHT,
     zIndex: 21,
   },
 });

@@ -18,7 +18,7 @@ import { Colors } from '../constants/theme';
 import PressableScale from '../components/PressableScale';
 import { DishType, DietType } from '../types';
 import { usePreferences } from '../context/PreferencesContext';
-import { CONTENT_MAX_WIDTH } from '../constants/responsive';
+import { CONTENT_MAX_WIDTH, isCompactTabletWindow, isTablet } from '../constants/responsive';
 
 const dishTypes: { id: DishType; label: string; icon: typeof Settings; color: string }[] = [
   { id: 'breakfast', label: 'Breakfast', icon: Coffee, color: '#fbbf24' },
@@ -35,6 +35,27 @@ const dietTypes: { id: DietType; label: string; color: string; icon: typeof Sett
   { id: 'Lactose-Free', label: 'Lactose-Free', color: '#c084fc', icon: MilkOff },
 ];
 const PRESS_RETENTION_OFFSET = { top: 6, bottom: 6, left: 6, right: 6 };
+const HEADER_ICON_SIZE = isTablet ? (isCompactTabletWindow ? 32 : 34) : 34;
+const OPTION_ICON_SIZE = isTablet ? 16 : 12;
+const HEADER_TOP_PADDING = isTablet ? (isCompactTabletWindow ? 44 : 56) : 60;
+const HEADER_HORIZONTAL_PADDING = isTablet ? 24 : 24;
+const HEADER_BOTTOM_PADDING = isTablet ? (isCompactTabletWindow ? 16 : 20) : 20;
+const HEADER_TITLE_SIZE = isTablet ? (isCompactTabletWindow ? 40 : 44) : 42;
+const HEADER_SUBTITLE_SIZE = isTablet ? 17 : 16;
+const CONTENT_PADDING = isTablet ? 20 : 20;
+const CONTENT_BOTTOM_PADDING = isTablet ? 150 : 120;
+const SECTION_SPACING = isTablet ? 28 : 32;
+const PANEL_PADDING = isTablet ? 18 : 16;
+const PANEL_RADIUS = isTablet ? 20 : 20;
+const PANEL_HEADER_SPACING = isTablet ? 16 : 16;
+const CATEGORY_TITLE_SIZE = isTablet ? (isCompactTabletWindow ? 26 : 28) : 26;
+const DIETARY_TITLE_SIZE = isTablet ? (isCompactTabletWindow ? 23 : 24) : 22;
+const SUBTITLE_SIZE = isTablet ? 14 : 13;
+const GRID_ROW_GAP = isTablet ? 14 : 14;
+const OPTION_HORIZONTAL_PADDING = isTablet ? 20 : 14;
+const OPTION_VERTICAL_PADDING = isTablet ? 14 : 10;
+const OPTION_ICON_BOX_SIZE = isTablet ? 30 : 22;
+const OPTION_LABEL_SIZE = isTablet ? 15 : 14;
 
 export default function SettingsScreen() {
   const { preferences, toggleCategory, toggleDiet } = usePreferences();
@@ -50,7 +71,7 @@ export default function SettingsScreen() {
 
       <View style={styles.header}>
         <View style={styles.headerTitleRow}>
-          <Settings size={34} color={Colors.dark.textPrimary} />
+          <Settings size={HEADER_ICON_SIZE} color={Colors.dark.textPrimary} />
           <Text style={styles.headerTitle}>Preferences</Text>
         </View>
         <Text style={styles.headerSubtitle}>Customize your recipe feed</Text>
@@ -60,7 +81,7 @@ export default function SettingsScreen() {
         style={styles.scrollView}
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
+        scrollEnabled
       >
         <View style={[styles.section, styles.categorySection]}>
           <View style={styles.categoryHeader}>
@@ -93,7 +114,7 @@ export default function SettingsScreen() {
                       isSelected && { backgroundColor: `${item.color}44` },
                     ]}
                   >
-                    <Icon size={12} color={item.color} />
+                    <Icon size={OPTION_ICON_SIZE} color={item.color} />
                   </View>
                   <Text
                     style={[
@@ -141,7 +162,7 @@ export default function SettingsScreen() {
                       isSelected && { backgroundColor: `${item.color}44` },
                     ]}
                   >
-                    <Icon size={12} color={item.color} />
+                    <Icon size={OPTION_ICON_SIZE} color={item.color} />
                   </View>
                   <Text
                     style={[
@@ -168,9 +189,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.dark.background,
   },
   header: {
-    paddingTop: 60,
-    paddingHorizontal: 24,
-    paddingBottom: 20,
+    paddingTop: HEADER_TOP_PADDING,
+    paddingHorizontal: HEADER_HORIZONTAL_PADDING,
+    paddingBottom: HEADER_BOTTOM_PADDING,
     alignItems: 'center',
   },
   headerTitleRow: {
@@ -180,7 +201,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   headerTitle: {
-    fontSize: 42,
+    fontSize: HEADER_TITLE_SIZE,
     fontWeight: '700',
     color: Colors.dark.textPrimary,
     textAlign: 'center',
@@ -189,7 +210,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
   },
   headerSubtitle: {
-    fontSize: 16,
+    fontSize: HEADER_SUBTITLE_SIZE,
     color: Colors.dark.textSecondary,
     textAlign: 'center',
   },
@@ -198,14 +219,14 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   content: {
-    padding: 20,
-    paddingBottom: 120,
+    padding: CONTENT_PADDING,
+    paddingBottom: CONTENT_BOTTOM_PADDING,
     width: '100%',
     maxWidth: CONTENT_MAX_WIDTH,
     alignSelf: 'center',
   },
   section: {
-    marginBottom: 32,
+    marginBottom: SECTION_SPACING,
   },
   sectionTitle: {
     fontSize: 20,
@@ -215,8 +236,8 @@ const styles = StyleSheet.create({
   },
   categorySection: {
     backgroundColor: 'rgba(6, 10, 6, 0.65)',
-    borderRadius: 20,
-    padding: 16,
+    borderRadius: PANEL_RADIUS,
+    padding: PANEL_PADDING,
     borderWidth: 1,
     borderColor: 'rgba(148, 163, 184, 0.12)',
     shadowColor: '#000000',
@@ -226,11 +247,11 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   categoryHeader: {
-    marginBottom: 16,
+    marginBottom: PANEL_HEADER_SPACING,
     alignItems: 'center',
   },
   categoryTitle: {
-    fontSize: 26,
+    fontSize: CATEGORY_TITLE_SIZE,
     fontWeight: '700',
     color: Colors.dark.textPrimary,
     marginBottom: 4,
@@ -242,7 +263,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 8,
   },
   categorySubtitle: {
-    fontSize: 13,
+    fontSize: SUBTITLE_SIZE,
     color: Colors.dark.textSecondary,
     textAlign: 'center',
     width: '100%',
@@ -252,12 +273,12 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 8,
     justifyContent: 'center',
-    rowGap: 14,
+    rowGap: GRID_ROW_GAP,
   },
   dietarySection: {
     backgroundColor: 'rgba(6, 10, 6, 0.65)',
-    borderRadius: 20,
-    padding: 16,
+    borderRadius: PANEL_RADIUS,
+    padding: PANEL_PADDING,
     borderWidth: 1,
     borderColor: 'rgba(148, 163, 184, 0.12)',
     shadowColor: '#000000',
@@ -267,18 +288,18 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   dietaryHeader: {
-    marginBottom: 16,
+    marginBottom: PANEL_HEADER_SPACING,
     alignItems: 'center',
   },
   dietaryTitle: {
-    fontSize: 22,
+    fontSize: DIETARY_TITLE_SIZE,
     fontWeight: '700',
     color: Colors.dark.textPrimary,
     marginBottom: 4,
     textAlign: 'center',
   },
   dietarySubtitle: {
-    fontSize: 13,
+    fontSize: SUBTITLE_SIZE,
     color: Colors.dark.textSecondary,
     textAlign: 'center',
   },
@@ -287,7 +308,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 8,
     justifyContent: 'center',
-    rowGap: 14,
+    rowGap: GRID_ROW_GAP,
   },
   optionsGrid: {
     flexDirection: 'row',
@@ -306,21 +327,21 @@ const styles = StyleSheet.create({
     borderColor: Colors.dark.border,
   },
   categoryOptionCard: {
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    gap: 8,
+    paddingHorizontal: OPTION_HORIZONTAL_PADDING,
+    paddingVertical: OPTION_VERTICAL_PADDING,
+    gap: isTablet ? 6 : 8,
     borderRadius: 12,
   },
   optionIcon: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
+    width: OPTION_ICON_BOX_SIZE,
+    height: OPTION_ICON_BOX_SIZE,
+    borderRadius: OPTION_ICON_BOX_SIZE / 2,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
   },
   categoryOptionLabel: {
-    fontSize: 14,
+    fontSize: OPTION_LABEL_SIZE,
   },
   optionCardSelected: {
     backgroundColor: 'rgba(255, 255, 255, 0.06)',
