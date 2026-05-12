@@ -446,12 +446,6 @@ button {
 
 .phone-wrapper {
   position: relative;
-  animation: floatPhone 10s ease-in-out infinite;
-}
-
-@keyframes floatPhone {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-14px); }
 }
 
 .phone-badge {
@@ -632,8 +626,12 @@ button {
 
 
 .screen-loop {
+  --screen-card-width: 240px;
+  --screen-gap: 28px;
+  --screen-cycle-distance: 1340px;
+
   display: flex;
-  gap: 28px;
+  gap: var(--screen-gap);
   padding: 26px 40px;
   width: max-content;
   animation: marqueeSlide 40s linear infinite;
@@ -642,7 +640,7 @@ button {
 
 .screen-card {
   flex: 0 0 auto;
-  width: 240px;
+  width: var(--screen-card-width);
   height: 520px;
   position: relative;
   transform-style: preserve-3d;
@@ -681,7 +679,7 @@ button {
 
 @keyframes marqueeSlide {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(calc(-1 * var(--screen-cycle-distance))); }
 }
 
 /* Responsive */
@@ -772,8 +770,12 @@ button {
     display: none;
   }
 
+  .screen-loop {
+    --screen-card-width: 220px;
+    --screen-cycle-distance: 1240px;
+  }
+
   .screen-card {
-    width: 220px;
     height: 480px;
   }
 
@@ -855,11 +857,12 @@ button {
   }
 
   .screen-loop {
+    --screen-card-width: 200px;
+    --screen-cycle-distance: 1140px;
     padding: 20px 24px;
   }
 
   .screen-card {
-    width: 200px;
     height: 440px;
   }
 }
@@ -944,8 +947,12 @@ button {
     font-size: 26px;
   }
 
+  .screen-loop {
+    --screen-card-width: 180px;
+    --screen-cycle-distance: 1040px;
+  }
+
   .screen-card {
-    width: 180px;
     height: 390px;
   }
 }
@@ -975,8 +982,12 @@ button {
     border-radius: 32px;
   }
 
+  .screen-loop {
+    --screen-card-width: 160px;
+    --screen-cycle-distance: 940px;
+  }
+
   .screen-card {
-    width: 160px;
     height: 350px;
   }
 }

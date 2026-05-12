@@ -18,7 +18,9 @@ function App() {
     { src: screen04, alt: 'Saved recipes screen' },
     { src: screen05, alt: 'Meal plan screen' },
   ]
-  const loopedScreens = [...screens, ...screens]
+  const previewLoops = Array.from({ length: 10 }, (_, loopIndex) =>
+    screens.map((screen) => ({ ...screen, loopIndex }))
+  ).flat()
 
   return (
     <div className="app">
@@ -144,10 +146,14 @@ function App() {
         <h2 className="screen-title">App Preview</h2>
         <div className="screen-marquee" aria-label="FlavorFlick app screens">
           <div className="screen-loop">
-            {loopedScreens.map((screen, index) => (
-              <div className="screen-card" key={`${screen.src}-${index}`}>
+            {previewLoops.map((screen, index) => (
+              <div
+                className="screen-card"
+                key={`${screen.src}-${screen.loopIndex}-${index}`}
+                aria-hidden={screen.loopIndex > 0}
+              >
                 <div className="screen-card-frame">
-                  <img src={screen.src} alt={screen.alt} />
+                  <img src={screen.src} alt={screen.loopIndex === 0 ? screen.alt : ''} />
                 </div>
               </div>
             ))}
